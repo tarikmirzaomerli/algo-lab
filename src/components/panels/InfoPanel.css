@@ -1,0 +1,147 @@
+.info-panel {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.info-header h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.info-header .description {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  background: rgba(15, 23, 42, 0.5);
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.title-globe {
+  color: #38bdf8;
+}
+
+.title-props {
+  color: #a855f7;
+}
+
+.how-it-works-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.how-it-works-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.825rem;
+  color: var(--text-main);
+  line-height: 1.45;
+}
+
+.step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* Real world applications styling */
+.real-world-section {
+  background: rgba(14, 116, 144, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.real-world-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.real-world-item {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.real-world-item p {
+  font-size: 0.825rem;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+/* Properties grid */
+.properties-section {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.25);
+}
+
+.properties-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.property-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.775rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 6px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.prop-label {
+  color: var(--text-dim);
+}
+
+.prop-yes {
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-weight: 600;
+}
+
+.prop-no {
+  color: #f87171;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-weight: 600;
+}
