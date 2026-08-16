@@ -37,4 +37,4 @@ npx vitest run
 
 ## 🌐 Live Demo
 
-Canlı uygulama bağlantısı: `[LIVE_DEMO_URL]`
+Canlı uygulama bağlantısı: [https://algo-lab-app.netlify.app/](https://algo-lab-app.netlify.app/)
