@@ -63,19 +63,19 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   };
 
   return (
-    <header className="top-nav-bar">
-      {/* 1. Brand Logo */}
-      <div className="nav-brand-group">
-        <div className="brand-logo-pill">
-          <div className="logo-icon-dot" />
-          <span className="logo-text">{t.brandName}</span>
-          <span className="logo-version-tag">{t.brandTag}</span>
+    <header className="top-nav-container">
+      {/* Primary Top Bar: Brand, Category Navigation, and Utilities */}
+      <div className="top-nav-primary-row">
+        {/* Brand Logo */}
+        <div className="nav-brand-group">
+          <div className="brand-logo-pill">
+            <div className="logo-icon-dot" />
+            <span className="logo-text">{t.brandName}</span>
+            <span className="logo-version-tag">{t.brandTag}</span>
+          </div>
         </div>
-      </div>
 
-      {/* 2. Middle Nav Section: Categories & Sub-items */}
-      <div className="nav-middle-section">
-        {/* Category Tabs */}
+        {/* Main Category Tabs */}
         <nav className="nav-category-pills" aria-label="Categories">
           {CATEGORY_GROUPS.map((group) => {
             const isCategoryActive = group.id === currentCategory.id;
@@ -97,7 +97,55 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
           })}
         </nav>
 
-        {/* Active Sub-item Pills inside category (Responsive & Scroll-safe) */}
+        {/* Right Action Controls: Lang, Theme, Pseudocode Drawer */}
+        <div className="nav-right-actions">
+          {/* Language Switch Button */}
+          <button
+            onClick={onToggleLang}
+            className="nav-action-pill lang-toggle-btn"
+            title={lang === 'tr' ? 'Switch to English' : "Türkçe'ye Geç"}
+            aria-label="Toggle language"
+          >
+            <Globe size={14} className="lang-icon" />
+            <span className="lang-code">{lang.toUpperCase()}</span>
+          </button>
+
+          {/* Dark Mode Toggle Button */}
+          <button
+            onClick={onToggleTheme}
+            className="nav-action-pill theme-toggle-btn"
+            title={
+              theme === 'dark'
+                ? lang === 'tr'
+                  ? 'Açık Mod'
+                  : 'Light Mode'
+                : lang === 'tr'
+                ? 'Karanlık Mod'
+                : 'Dark Mode'
+            }
+            aria-label="Toggle dark/light mode"
+          >
+            {theme === 'dark' ? (
+              <Sun size={15} className="theme-sun-icon" />
+            ) : (
+              <Moon size={15} className="theme-moon-icon" />
+            )}
+          </button>
+
+          {/* Code Drawer Toggle */}
+          <button
+            onClick={onToggleDrawer}
+            className={`drawer-toggle-btn ${isDrawerOpen ? 'active' : ''}`}
+            title={t.pseudocode}
+          >
+            <Code2 size={15} />
+            <span className="drawer-btn-label">{t.pseudocode}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Subnav Ribbon: Dedicated Algorithm & Data Structure Pills */}
+      <div className="top-nav-subnav-row">
         <div className="nav-item-pills-row" role="tablist">
           {currentCategory.itemIds.map((itemId) => {
             const isItemActive = itemId === selectedItemId;
@@ -115,44 +163,6 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
             );
           })}
         </div>
-      </div>
-
-      {/* 3. Right Action Controls: Lang, Dark Mode, Pseudocode Drawer */}
-      <div className="nav-right-actions">
-        {/* Language Switch Button */}
-        <button
-          onClick={onToggleLang}
-          className="nav-action-pill lang-toggle-btn"
-          title={lang === 'tr' ? 'Switch to English' : "Türkçe'ye Geç"}
-          aria-label="Toggle language"
-        >
-          <Globe size={15} className="lang-icon" />
-          <span className="lang-code">{lang.toUpperCase()}</span>
-        </button>
-
-        {/* Dark Mode Toggle Button */}
-        <button
-          onClick={onToggleTheme}
-          className="nav-action-pill theme-toggle-btn"
-          title={theme === 'dark' ? (lang === 'tr' ? 'Açık Mod' : 'Light Mode') : (lang === 'tr' ? 'Karanlık Mod' : 'Dark Mode')}
-          aria-label="Toggle dark/light mode"
-        >
-          {theme === 'dark' ? (
-            <Sun size={15} className="theme-sun-icon" />
-          ) : (
-            <Moon size={15} className="theme-moon-icon" />
-          )}
-        </button>
-
-        {/* Code Drawer Toggle */}
-        <button
-          onClick={onToggleDrawer}
-          className={`drawer-toggle-btn ${isDrawerOpen ? 'active' : ''}`}
-          title={t.pseudocode}
-        >
-          <Code2 size={16} />
-          <span className="drawer-btn-label">{t.pseudocode}</span>
-        </button>
       </div>
     </header>
   );

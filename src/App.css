@@ -11,7 +11,7 @@
 .algo-lab-body {
   display: flex;
   flex: 1;
-  height: calc(100vh - 60px - 72px);
+  min-height: 0;
   overflow: hidden;
   position: relative;
 }
@@ -20,6 +20,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
   height: 100%;
   overflow: hidden;
   background: var(--bg-canvas, #f9f6f0);
@@ -34,4 +35,5 @@
   position: relative;
   padding: 1rem;
   box-sizing: border-box;
+  min-height: 0;
 }
