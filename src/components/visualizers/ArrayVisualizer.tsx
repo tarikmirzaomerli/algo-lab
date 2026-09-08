@@ -1,16 +1,19 @@
 import React from 'react';
 import type { StepSnapshot } from '../../engine/types';
 import type { ArrayAlgorithmState } from '../../algorithms/sorting/bubbleSort';
+import type { Translations } from '../../i18n/translations';
 import './ArrayVisualizer.css';
 
 interface ArrayVisualizerProps {
   snapshot?: StepSnapshot<ArrayAlgorithmState>;
   initialArray: number[];
+  t?: Translations;
 }
 
 export const ArrayVisualizer: React.FC<ArrayVisualizerProps> = ({
   snapshot,
   initialArray,
+  t,
 }) => {
   const arrayToRender = Array.isArray(snapshot?.structureState?.array)
     ? snapshot.structureState.array
@@ -25,11 +28,22 @@ export const ArrayVisualizer: React.FC<ArrayVisualizerProps> = ({
 
   const maxVal = Math.max(...arrayToRender, 100);
 
-  // Group pointers by array index
+  // Group genuine index pointers by array index
+  // We exclude non-index meta keys like 'target' or keys with numeric values outside [0..length-1]
+  const validPointerKeys = new Set([
+    'i', 'j', 'k', 'l', 'r', 'low', 'mid', 'high', 'prev', 'step',
+    'pos', 'left', 'right', 'pivot', 'bound', 'check', 'curr', 'minIdx'
+  ]);
+
   const pointersByIndex: Record<number, string[]> = {};
   Object.entries(pointers).forEach(([key, val]) => {
     const numericVal = Number(val);
-    if (!isNaN(numericVal) && numericVal >= 0 && numericVal < arrayToRender.length) {
+    if (
+      validPointerKeys.has(key) &&
+      !isNaN(numericVal) &&
+      numericVal >= 0 &&
+      numericVal < arrayToRender.length
+    ) {
       if (!pointersByIndex[numericVal]) pointersByIndex[numericVal] = [];
       pointersByIndex[numericVal].push(key);
     }
@@ -41,10 +55,10 @@ export const ArrayVisualizer: React.FC<ArrayVisualizerProps> = ({
       <div className="array-status-ribbon">
         <div className="array-badge-pill">
           <span className="badge-dot" />
-          <span>Eleman Sayısı: {arrayToRender.length}</span>
+          <span>{t ? `${t.elements}: ${arrayToRender.length}` : `Eleman Sayısı: ${arrayToRender.length}`}</span>
         </div>
         <div className="array-badge-pill secondary">
-          <span>Maksimum Değer: {Math.max(...arrayToRender, 0)}</span>
+          <span>Max: {Math.max(...arrayToRender, 0)}</span>
         </div>
       </div>
 

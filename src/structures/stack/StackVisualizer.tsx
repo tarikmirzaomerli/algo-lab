@@ -1,14 +1,16 @@
 import React from 'react';
 import type { StepSnapshot } from '../../engine/types';
 import type { StackState } from './stackEngine';
+import type { Translations } from '../../i18n/translations';
 import './StackVisualizer.css';
 
 interface StackVisualizerProps {
   snapshot?: StepSnapshot<StackState>;
   currentState: StackState;
+  t?: Translations;
 }
 
-export const StackVisualizer: React.FC<StackVisualizerProps> = ({ snapshot, currentState }) => {
+export const StackVisualizer: React.FC<StackVisualizerProps> = ({ snapshot, currentState, t }) => {
   const items = Array.isArray(snapshot?.structureState?.items)
     ? snapshot.structureState.items
     : (currentState?.items || []);
@@ -30,10 +32,10 @@ export const StackVisualizer: React.FC<StackVisualizerProps> = ({ snapshot, curr
       <div className="stack-status-ribbon">
         <div className="stack-badge-pill">
           <span className="badge-dot" />
-          <span>Kapasite: {items.length} / {capacity}</span>
+          <span>{t ? `${t.stack.capacity}: ${items.length} / ${capacity}` : `Kapasite: ${items.length} / ${capacity}`}</span>
         </div>
         <div className="stack-badge-pill secondary">
-          <span>LIFO (Last In First Out)</span>
+          <span>{t ? t.stack.lifo : 'LIFO (Last In First Out)'}</span>
         </div>
       </div>
 
@@ -63,7 +65,7 @@ export const StackVisualizer: React.FC<StackVisualizerProps> = ({ snapshot, curr
                   {item ? (
                     <div className={itemClass} key={item.id}>
                       <span className="item-val">{item.value}</span>
-                      {isTop && <span className="top-indicator-tag">TOP</span>}
+                      {isTop && <span className="top-indicator-tag">{t ? t.stack.top : 'TOP'}</span>}
                     </div>
                   ) : (
                     <div className="slot-placeholder" />
@@ -86,7 +88,7 @@ export const StackVisualizer: React.FC<StackVisualizerProps> = ({ snapshot, curr
 
         {/* Canister Base Plate */}
         <div className="canister-base">
-          <span className="base-label">TABAN (INDEX 0)</span>
+          <span className="base-label">{t ? t.stack.base : 'TABAN (INDEX 0)'}</span>
         </div>
       </div>
     </div>

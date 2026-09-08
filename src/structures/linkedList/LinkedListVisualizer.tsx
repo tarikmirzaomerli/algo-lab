@@ -1,16 +1,19 @@
 import React from 'react';
 import type { StepSnapshot } from '../../engine/types';
 import { type LinkedListState, getOrderedNodes } from './linkedListEngine';
+import type { Translations } from '../../i18n/translations';
 import './LinkedListVisualizer.css';
 
 interface LinkedListVisualizerProps {
   snapshot?: StepSnapshot<LinkedListState>;
   currentState: LinkedListState;
+  t?: Translations;
 }
 
 export const LinkedListVisualizer: React.FC<LinkedListVisualizerProps> = ({
   snapshot,
   currentState,
+  t,
 }) => {
   const stateToRender =
     snapshot?.structureState && Array.isArray(snapshot.structureState.nodes)
@@ -28,7 +31,7 @@ export const LinkedListVisualizer: React.FC<LinkedListVisualizerProps> = ({
       <div className="ll-status-ribbon">
         <div className="ll-badge-pill">
           <span className="badge-dot" />
-          <span>Düğüm Sayısı: {orderedNodes.length}</span>
+          <span>{t ? `${t.linkedList.nodeCount}: ${orderedNodes.length}` : `Düğüm Sayısı: ${orderedNodes.length}`}</span>
         </div>
         <div className="ll-badge-pill secondary">
           <span>Head ➜ [Val | Next] ➜ NULL</span>
@@ -47,14 +50,14 @@ export const LinkedListVisualizer: React.FC<LinkedListVisualizerProps> = ({
         <div className="chain-nodes-row">
           {orderedNodes.length === 0 && !ghostNode && (
             <div className="empty-list-card">
-              <span>Liste Boş (head = NULL)</span>
+              <span>{t ? t.linkedList.empty : 'Liste Boş (head = NULL)'}</span>
             </div>
           )}
 
           {/* Render Ghost Node if in orphan creation state */}
           {ghostNode && (
             <div className="ghost-node-wrapper">
-              <div className="ghost-tag">YENİ DÜĞÜM</div>
+              <div className="ghost-tag">{t ? t.linkedList.newNode : 'YENİ DÜĞÜM'}</div>
               <div className="node-box ghost-active">
                 <div className="node-val-compartment">{ghostNode.value}</div>
                 <div className="node-next-compartment">
@@ -101,11 +104,11 @@ export const LinkedListVisualizer: React.FC<LinkedListVisualizerProps> = ({
                       y1="12"
                       x2="46"
                       y2="12"
-                      stroke="#2B2623"
+                      stroke="var(--text-primary, #2B2623)"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                     />
-                    <polygon points="46,7 54,12 46,17" fill="#2B2623" />
+                    <polygon points="46,7 54,12 46,17" fill="var(--text-primary, #2B2623)" />
                   </svg>
                 </div>
 

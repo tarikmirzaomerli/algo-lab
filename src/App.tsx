@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useVisualizerEngine } from './engine/useVisualizerEngine';
 import type { StepSnapshot } from './engine/types';
 import { getItemMetadata } from './algorithms/registry';
+import { TRANSLATIONS, type Language } from './i18n/translations';
 
 // Data Structures
 import {
@@ -69,6 +70,38 @@ import './App.css';
 export const App: React.FC = () => {
   const [selectedItemId, setSelectedItemId] = useState<string>('bubble-sort');
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
+
+  // i18n and Theme persistent states
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('algo_lang');
+    return saved === 'en' || saved === 'tr' ? saved : 'tr';
+  });
+
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('algo_theme');
+    return saved === 'dark' || saved === 'light' ? saved : 'light';
+  });
+
+  // Sync theme to document root
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('algo_theme', theme);
+  }, [theme]);
+
+  // Sync lang to storage
+  useEffect(() => {
+    localStorage.setItem('algo_lang', lang);
+  }, [lang]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  const toggleLang = () => {
+    setLang((prev) => (prev === 'tr' ? 'en' : 'tr'));
+  };
+
+  const t = TRANSLATIONS[lang];
 
   // Data structure persistent states
   const [stackState, setStackState] = useState<StackState>(() => createInitialStack());
@@ -367,9 +400,12 @@ export const App: React.FC = () => {
   };
 
   const currentMetadata = getItemMetadata(selectedItemId);
-  const isSortedSearch = ['binary-search', 'jump-search', 'interpolation-search', 'exponential-search'].includes(
-    selectedItemId
-  );
+  const isSortedSearch = [
+    'binary-search',
+    'jump-search',
+    'interpolation-search',
+    'exponential-search',
+  ].includes(selectedItemId);
 
   return (
     <div className="algo-lab-app">
@@ -381,6 +417,11 @@ export const App: React.FC = () => {
         }}
         isDrawerOpen={isDrawerOpen}
         onToggleDrawer={() => setIsDrawerOpen((prev) => !prev)}
+        lang={lang}
+        onToggleLang={toggleLang}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        t={t}
       />
 
       {/* 2. Main Center Workspace */}
@@ -389,6 +430,7 @@ export const App: React.FC = () => {
           {/* Action Toolbar above canvas */}
           <StructureActionToolbar
             selectedItemId={selectedItemId}
+            t={t}
             onStackPush={handleStackPush}
             onStackPop={handleStackPop}
             onStackPeek={handleStackPeek}
@@ -420,6 +462,7 @@ export const App: React.FC = () => {
               <StackVisualizer
                 snapshot={currentSnapshot as StepSnapshot<StackState>}
                 currentState={stackState}
+                t={t}
               />
             )}
 
@@ -427,6 +470,7 @@ export const App: React.FC = () => {
               <QueueVisualizer
                 snapshot={currentSnapshot as StepSnapshot<QueueState>}
                 currentState={queueState}
+                t={t}
               />
             )}
 
@@ -434,6 +478,7 @@ export const App: React.FC = () => {
               <LinkedListVisualizer
                 snapshot={currentSnapshot as StepSnapshot<LinkedListState>}
                 currentState={llState}
+                t={t}
               />
             )}
 
@@ -441,6 +486,7 @@ export const App: React.FC = () => {
               <BSTVisualizer
                 snapshot={currentSnapshot as StepSnapshot<BSTState>}
                 currentState={bstState}
+                t={t}
               />
             )}
 
@@ -453,6 +499,7 @@ export const App: React.FC = () => {
                     ? [...initialArray].sort((a, b) => a - b)
                     : initialArray
                 }
+                t={t}
               />
             )}
           </div>
@@ -464,6 +511,8 @@ export const App: React.FC = () => {
           currentSnapshot={currentSnapshot}
           isOpen={isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
+          lang={lang}
+          t={t}
         />
       </div>
 
@@ -474,6 +523,7 @@ export const App: React.FC = () => {
         totalSteps={totalSteps}
         speed={speed}
         isLooping={isLooping}
+        t={t}
         onTogglePlay={togglePlay}
         onStepForward={stepForward}
         onStepBackward={stepBackward}

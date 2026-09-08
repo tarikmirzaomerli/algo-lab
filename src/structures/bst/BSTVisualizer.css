@@ -27,11 +27,12 @@
   font-size: 0.825rem;
   font-weight: 600;
   color: var(--text-primary, #2b2623);
-  box-shadow: 0 2px 5px rgba(43, 38, 35, 0.04);
+  box-shadow: var(--shadow-tactile-sm);
+  transition: all 0.2s ease;
 }
 
 .bst-badge-pill.secondary {
-  background: #f4efea;
+  background: var(--bg-canvas-subtle, #f4efea);
   color: var(--text-secondary, #6e6760);
 }
 
@@ -39,20 +40,21 @@
   width: 100%;
   max-width: 680px;
   height: 330px;
-  background: #fbf9f5;
+  background: var(--bg-card-muted, #fbf9f5);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   border-radius: 14px;
-  box-shadow: inset 0 0 15px rgba(43, 38, 35, 0.03);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .bst-empty-box {
   padding: 1.5rem 2rem;
-  border: 2px dashed #e6dfd5;
+  border: 2px dashed var(--border-tactile, #e6dfd5);
   border-radius: 12px;
   color: var(--text-muted, #a49c94);
   font-weight: 600;
@@ -70,34 +72,34 @@
 }
 
 .tree-node-circle {
-  fill: #ffffff;
+  fill: var(--bg-card, #ffffff);
   stroke: var(--border-tactile, #e6dfd5);
   stroke-width: 2.5;
-  filter: drop-shadow(0 3px 6px rgba(43, 38, 35, 0.08));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tree-node-circle.node-comparing {
-  fill: #fef7eb;
-  stroke: #c88e32;
+  fill: var(--color-pointer-bg, #fef7eb);
+  stroke: var(--color-pointer, #c88e32);
   stroke-width: 3.5;
 }
 
 .tree-node-circle.node-visiting {
-  fill: #ebf2eb;
-  stroke: #5e825d;
+  fill: var(--color-active-bg, #ebf2eb);
+  stroke: var(--color-active, #5e825d);
   stroke-width: 3.5;
 }
 
 .tree-node-circle.node-found {
-  fill: #eef5f0;
-  stroke: #4a6b53;
+  fill: var(--color-settled-bg, #eef5f0);
+  stroke: var(--color-settled, #4a6b53);
   stroke-width: 4;
 }
 
 .tree-node-circle.node-settled {
-  fill: #fdf1ed;
-  stroke: #c86d51;
+  fill: var(--color-mutate-bg, #fdf1ed);
+  stroke: var(--color-mutate, #c86d51);
   stroke-width: 3.5;
 }
 
@@ -116,10 +118,10 @@
   gap: 0.75rem;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background: #ffffff;
+  background: var(--bg-card, #ffffff);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(43, 38, 35, 0.04);
+  box-shadow: var(--shadow-tactile-sm);
   max-width: 90%;
   overflow-x: auto;
 }
@@ -143,18 +145,18 @@
   align-items: center;
   gap: 4px;
   padding: 2px 8px;
-  background: #ebf2eb;
-  border: 1px solid #a9c5a8;
+  background: var(--color-active-bg, #ebf2eb);
+  border: 1px solid var(--color-active-border, #a9c5a8);
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 700;
-  color: #2e522d;
+  color: var(--color-active, #2e522d);
   animation: chipAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .chip-idx {
   font-size: 0.65rem;
-  color: #5e825d;
+  color: var(--color-active, #5e825d);
 }
 
 @keyframes chipAppear {

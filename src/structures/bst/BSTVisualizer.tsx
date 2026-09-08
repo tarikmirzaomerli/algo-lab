@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import type { StepSnapshot } from '../../engine/types';
 import type { BSTState } from './bstEngine';
+import type { Translations } from '../../i18n/translations';
 import './BSTVisualizer.css';
 
 interface BSTVisualizerProps {
   snapshot?: StepSnapshot<BSTState>;
   currentState: BSTState;
+  t?: Translations;
 }
 
 interface RenderNode {
@@ -17,7 +19,7 @@ interface RenderNode {
   rightId: string | null;
 }
 
-export const BSTVisualizer: React.FC<BSTVisualizerProps> = ({ snapshot, currentState }) => {
+export const BSTVisualizer: React.FC<BSTVisualizerProps> = ({ snapshot, currentState, t }) => {
   const stateToRender =
     snapshot?.structureState &&
     typeof snapshot.structureState.nodes === 'object' &&
@@ -108,10 +110,10 @@ export const BSTVisualizer: React.FC<BSTVisualizerProps> = ({ snapshot, currentS
       <div className="bst-status-ribbon">
         <div className="bst-badge-pill">
           <span className="badge-dot" />
-          <span>Düğüm Sayısı: {renderNodes.length}</span>
+          <span>{t ? `${t.bst.nodeCount}: ${renderNodes.length}` : `Düğüm Sayısı: ${renderNodes.length}`}</span>
         </div>
         <div className="bst-badge-pill secondary">
-          <span>Sol &lt; Kök &lt; Sağ</span>
+          <span>{t ? t.bst.rule : 'Sol < Kök < Sağ'}</span>
         </div>
       </div>
 
@@ -119,7 +121,7 @@ export const BSTVisualizer: React.FC<BSTVisualizerProps> = ({ snapshot, currentS
       <div className="bst-canvas-stage">
         {renderNodes.length === 0 ? (
           <div className="bst-empty-box">
-            <span>Ağaç Boş (Root = NULL)</span>
+            <span>{t ? t.bst.empty : 'Ağaç Boş (Root = NULL)'}</span>
           </div>
         ) : (
           <svg
@@ -135,7 +137,7 @@ export const BSTVisualizer: React.FC<BSTVisualizerProps> = ({ snapshot, currentS
                   key={`${conn.parentId}->${conn.childId}`}
                   d={pathD}
                   fill="none"
-                  stroke="#2B2623"
+                  stroke="var(--text-primary, #2B2623)"
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   className="branch-path"
@@ -180,7 +182,7 @@ export const BSTVisualizer: React.FC<BSTVisualizerProps> = ({ snapshot, currentS
       {/* Visited Sequence Output Ribbon (For Traversals) */}
       {visitedSequence.length > 0 && (
         <div className="visited-sequence-bar">
-          <span className="sequence-title">ZİYARET SIRASI:</span>
+          <span className="sequence-title">{t ? t.bst.visitedOrder : 'ZİYARET SIRASI:'}</span>
           <div className="sequence-pill-list">
             {visitedSequence.map((val, idx) => (
               <div key={idx} className="sequence-chip">

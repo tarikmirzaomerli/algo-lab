@@ -8,6 +8,7 @@ import {
   Repeat,
   Gauge,
 } from 'lucide-react';
+import type { Translations } from '../../i18n/translations';
 import './TransportDock.css';
 
 interface TransportDockProps {
@@ -16,6 +17,7 @@ interface TransportDockProps {
   totalSteps: number;
   speed: number;
   isLooping: boolean;
+  t: Translations;
   onTogglePlay: () => void;
   onStepForward: () => void;
   onStepBackward: () => void;
@@ -31,6 +33,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
   totalSteps,
   speed,
   isLooping,
+  t,
   onTogglePlay,
   onStepForward,
   onStepBackward,
@@ -49,7 +52,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
         <button
           onClick={onReset}
           className="dock-btn secondary"
-          title="Başa Dön (Reset)"
+          title={`${t.reset} (Reset)`}
           disabled={totalSteps <= 1}
         >
           <RotateCcw size={18} />
@@ -58,7 +61,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
         <button
           onClick={onStepBackward}
           className="dock-btn secondary"
-          title="Bir Adım Geri (Sol Ok)"
+          title={`${t.stepBack} (←)`}
           disabled={currentStepIdx === 0 || totalSteps <= 1}
         >
           <SkipBack size={18} />
@@ -67,7 +70,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
         <button
           onClick={onTogglePlay}
           className={`dock-btn primary-play ${isPlaying ? 'playing' : ''}`}
-          title={isPlaying ? 'Duraklat (Boşluk)' : 'Oynat (Boşluk)'}
+          title={isPlaying ? `${t.pause} (Space)` : `${t.play} (Space)`}
           disabled={totalSteps <= 1}
         >
           {isPlaying ? <Pause size={20} /> : <Play size={20} className="play-icon" />}
@@ -76,7 +79,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
         <button
           onClick={onStepForward}
           className="dock-btn secondary"
-          title="Bir Adım İleri (Sağ Ok)"
+          title={`${t.stepForward} (→)`}
           disabled={currentStepIdx >= maxStep || totalSteps <= 1}
         >
           <SkipForward size={18} />
@@ -86,7 +89,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
       {/* Scrubber Timeline Slider */}
       <div className="dock-timeline-group">
         <div className="timeline-step-badge">
-          <span className="step-label">ADIM</span>
+          <span className="step-label">{t.step}</span>
           <span className="step-value">
             {totalSteps > 0 ? currentStepIdx + 1 : 0} <span className="step-total">/ {totalSteps}</span>
           </span>
@@ -123,7 +126,7 @@ export const TransportDock: React.FC<TransportDockProps> = ({
         <button
           onClick={onToggleLoop}
           className={`dock-btn loop-btn ${isLooping ? 'active' : ''}`}
-          title={isLooping ? 'Döngü Açık' : 'Döngü Kapalı'}
+          title={isLooping ? t.loopOn : t.loopOff}
         >
           <Repeat size={16} />
         </button>

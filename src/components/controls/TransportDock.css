@@ -6,10 +6,11 @@
   padding: 0 1.5rem;
   background-color: var(--bg-dock, #ffffff);
   border-top: 1.5px solid var(--border-tactile, #e6dfd5);
-  box-shadow: 0 -4px 12px rgba(43, 38, 35, 0.04);
+  box-shadow: var(--shadow-tactile-md);
   z-index: 20;
   box-sizing: border-box;
   gap: 1.5rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .dock-buttons-group {
@@ -25,6 +26,7 @@
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
 }
 
 .dock-btn:disabled {
@@ -36,32 +38,32 @@
 .dock-btn.secondary {
   width: 38px;
   height: 38px;
-  background: #fbf9f5;
+  background: var(--bg-card-muted, #fbf9f5);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   color: var(--text-primary, #2b2623);
 }
 
 .dock-btn.secondary:hover:not(:disabled) {
-  background: #f4efea;
-  border-color: #d8cebf;
+  background: var(--bg-canvas-subtle, #f4efea);
+  border-color: var(--text-muted, #d8cebf);
 }
 
 .dock-btn.primary-play {
   width: 46px;
   height: 46px;
   background: var(--text-primary, #2b2623);
-  color: #f9f6f0;
+  color: var(--text-inverse, #f9f6f0);
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(43, 38, 35, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .dock-btn.primary-play:hover:not(:disabled) {
-  background: #413a36;
+  opacity: 0.9;
   transform: scale(1.04);
 }
 
 .dock-btn.primary-play.playing {
-  background: #c86d51;
+  background: var(--color-mutate, #c86d51);
   box-shadow: 0 4px 12px rgba(200, 109, 81, 0.3);
 }
 
@@ -114,7 +116,7 @@
   width: 100%;
   height: 6px;
   -webkit-appearance: none;
-  background: #e6dfd5;
+  background: var(--border-tactile, #e6dfd5);
   border-radius: 3px;
   outline: none;
   cursor: pointer;
@@ -127,13 +129,13 @@
   border-radius: 50%;
   background: var(--text-primary, #2b2623);
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(43, 38, 35, 0.25);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   transition: transform 0.15s ease;
 }
 
 .timeline-slider::-webkit-slider-thumb:hover {
   transform: scale(1.2);
-  background: #5e825d;
+  background: var(--color-active, #5e825d);
 }
 
 .dock-settings-group {
@@ -146,7 +148,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #f4efea;
+  background: var(--bg-canvas-subtle, #f4efea);
   padding: 3px 6px;
   border-radius: 8px;
   border: 1px solid var(--border-tactile, #e6dfd5);
@@ -163,24 +165,38 @@
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-secondary, #6e6760);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .speed-pill.active {
-  background: #ffffff;
+  background: var(--bg-card, #ffffff);
   color: var(--text-primary, #2b2623);
-  box-shadow: 0 1px 3px rgba(43, 38, 35, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .loop-btn {
   width: 34px;
   height: 34px;
-  background: #fbf9f5;
+  background: var(--bg-card-muted, #fbf9f5);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   color: var(--text-secondary, #6e6760);
 }
 
 .loop-btn.active {
-  background: #ebf2eb;
-  border-color: #a9c5a8;
-  color: #2e522d;
+  background: var(--color-active-bg, #ebf2eb);
+  border-color: var(--color-active-border, #a9c5a8);
+  color: var(--color-active, #2e522d);
+}
+
+@media (max-width: 680px) {
+  .transport-dock {
+    padding: 0 0.75rem;
+    gap: 0.75rem;
+  }
+  .dock-timeline-group {
+    max-width: 100%;
+  }
 }

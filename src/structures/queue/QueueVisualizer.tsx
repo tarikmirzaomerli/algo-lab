@@ -1,14 +1,16 @@
 import React from 'react';
 import type { StepSnapshot } from '../../engine/types';
 import type { QueueState } from './queueEngine';
+import type { Translations } from '../../i18n/translations';
 import './QueueVisualizer.css';
 
 interface QueueVisualizerProps {
   snapshot?: StepSnapshot<QueueState>;
   currentState: QueueState;
+  t?: Translations;
 }
 
-export const QueueVisualizer: React.FC<QueueVisualizerProps> = ({ snapshot, currentState }) => {
+export const QueueVisualizer: React.FC<QueueVisualizerProps> = ({ snapshot, currentState, t }) => {
   const items = Array.isArray(snapshot?.structureState?.items)
     ? snapshot.structureState.items
     : (currentState?.items || []);
@@ -36,10 +38,10 @@ export const QueueVisualizer: React.FC<QueueVisualizerProps> = ({ snapshot, curr
       <div className="queue-status-ribbon">
         <div className="queue-badge-pill">
           <span className="badge-dot" />
-          <span>Kapasite: {items.length} / {capacity}</span>
+          <span>{t ? `${t.queue.capacity}: ${items.length} / ${capacity}` : `Kapasite: ${items.length} / ${capacity}`}</span>
         </div>
         <div className="queue-badge-pill secondary">
-          <span>FIFO (First In First Out)</span>
+          <span>{t ? t.queue.fifo : 'FIFO (First In First Out)'}</span>
         </div>
       </div>
 
@@ -48,8 +50,8 @@ export const QueueVisualizer: React.FC<QueueVisualizerProps> = ({ snapshot, curr
         {/* Left Egress Gate */}
         <div className="conveyor-gate egress">
           <div className="gate-icon">⬅</div>
-          <span className="gate-label">ÇIKIŞ (FRONT)</span>
-          <span className="gate-sub">Dequeue</span>
+          <span className="gate-label">{t ? t.queue.egress : 'ÇIKIŞ (FRONT)'}</span>
+          <span className="gate-sub">{t ? t.queue.dequeue : 'Dequeue'}</span>
         </div>
 
         {/* Main Conveyor Tube */}
@@ -73,15 +75,15 @@ export const QueueVisualizer: React.FC<QueueVisualizerProps> = ({ snapshot, curr
                 <div key={slotIdx} className="conveyor-slot-column">
                   {/* Top Pointer Indicator */}
                   <div className="slot-pointer-header">
-                    {isFront && (
+                    {isFront && !isRear && (
                       <div className="pointer-pill front-pill">
-                        <span>front</span>
+                        <span>{t ? t.queue.front : 'front'}</span>
                         <span className="pill-arrow">▼</span>
                       </div>
                     )}
                     {isRear && !isFront && (
                       <div className="pointer-pill rear-pill">
-                        <span>rear</span>
+                        <span>{t ? t.queue.rear : 'rear'}</span>
                         <span className="pill-arrow">▼</span>
                       </div>
                     )}
@@ -120,8 +122,8 @@ export const QueueVisualizer: React.FC<QueueVisualizerProps> = ({ snapshot, curr
         {/* Right Ingress Gate */}
         <div className="conveyor-gate ingress">
           <div className="gate-icon">⬅</div>
-          <span className="gate-label">GİRİŞ (REAR)</span>
-          <span className="gate-sub">Enqueue</span>
+          <span className="gate-label">{t ? t.queue.ingress : 'GİRİŞ (REAR)'}</span>
+          <span className="gate-sub">{t ? t.queue.enqueue : 'Enqueue'}</span>
         </div>
       </div>
     </div>

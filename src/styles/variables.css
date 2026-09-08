@@ -1,5 +1,5 @@
 :root {
-  /* Warm Earthy & Minimalist Paper Palette */
+  /* Warm Earthy & Minimalist Paper Palette (Light Mode) */
   --bg-canvas: #f9f6f0;
   --bg-canvas-subtle: #f4efea;
   --bg-card: #ffffff;
@@ -42,6 +42,54 @@
   /* Fonts */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  /* Grid Dot Color */
+  --grid-dot-color: #e6dfd5;
+}
+
+[data-theme='dark'] {
+  /* Warm Tactile Charcoal Paper Palette (Dark Mode) */
+  --bg-canvas: #151311;
+  --bg-canvas-subtle: #1c1916;
+  --bg-card: #231f1b;
+  --bg-card-muted: #1e1a17;
+  --bg-dock: #201c19;
+
+  /* Typography & Structure */
+  --text-primary: #f5efe6;
+  --text-secondary: #b5aba0;
+  --text-muted: #787067;
+  --text-inverse: #151311;
+
+  /* Tactile Borders & Lines */
+  --border-tactile: #38312a;
+  --border-subtle: #2a241e;
+  --border-strong: #f5efe6;
+
+  /* State Colors */
+  --color-active: #7ea37d;
+  --color-active-bg: #1e2c1e;
+  --color-active-border: #3d5a3c;
+
+  --color-mutate: #df8166;
+  --color-mutate-bg: #351f1a;
+  --color-mutate-border: #6d392e;
+
+  --color-settled: #6b9e78;
+  --color-settled-bg: #1c2b20;
+  --color-settled-border: #375b3e;
+
+  --color-pointer: #dfaf57;
+  --color-pointer-bg: #322512;
+  --color-pointer-border: #6b4e1f;
+
+  /* Shadows */
+  --shadow-tactile-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-tactile-md: 0 4px 12px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-tactile-lg: 0 10px 25px rgba(0, 0, 0, 0.45), 0 3px 6px rgba(0, 0, 0, 0.25);
+
+  /* Grid Dot Color */
+  --grid-dot-color: #2c2621;
 }
 
 body {
@@ -52,6 +100,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: radial-gradient(#e6dfd5 0.75px, transparent 0.75px);
+  background-image: radial-gradient(var(--grid-dot-color) 0.75px, transparent 0.75px);
   background-size: 24px 24px;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }

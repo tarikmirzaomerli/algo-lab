@@ -9,10 +9,12 @@ import {
   Sparkles,
   ListOrdered,
 } from 'lucide-react';
+import type { Translations } from '../../i18n/translations';
 import './StructureActionToolbar.css';
 
 interface StructureActionToolbarProps {
   selectedItemId: string;
+  t: Translations;
   // Stack
   onStackPush?: (val: number) => void;
   onStackPop?: () => void;
@@ -46,6 +48,7 @@ interface StructureActionToolbarProps {
 
 export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
   selectedItemId,
+  t,
   onStackPush,
   onStackPop,
   onStackPeek,
@@ -96,27 +99,27 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
               max={99}
               min={1}
             />
-            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+            <button onClick={handleRandomizeInput} className="stepper-btn" title={t.randomNum}>
               <Sparkles size={13} />
             </button>
           </div>
 
           <button onClick={() => onStackPush?.(getNumericValue())} className="pill-btn primary">
             <Plus size={14} />
-            <span>Push ({getNumericValue()})</span>
+            <span>{t.stack.push} ({getNumericValue()})</span>
           </button>
 
           <button onClick={onStackPop} className="pill-btn warn">
             <Minus size={14} />
-            <span>Pop</span>
+            <span>{t.stack.pop}</span>
           </button>
 
           <button onClick={onStackPeek} className="pill-btn secondary">
             <Eye size={14} />
-            <span>Peek</span>
+            <span>{t.stack.peek}</span>
           </button>
 
-          <button onClick={onStackReset} className="pill-btn subtle" title="Yığını Sıfırla">
+          <button onClick={onStackReset} className="pill-btn subtle" title={t.stack.clear}>
             <RotateCcw size={14} />
           </button>
         </div>
@@ -134,27 +137,27 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
               max={99}
               min={1}
             />
-            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+            <button onClick={handleRandomizeInput} className="stepper-btn" title={t.randomNum}>
               <Sparkles size={13} />
             </button>
           </div>
 
           <button onClick={() => onQueueEnqueue?.(getNumericValue())} className="pill-btn primary">
             <Plus size={14} />
-            <span>Enqueue ({getNumericValue()})</span>
+            <span>{t.queue.enqueue} ({getNumericValue()})</span>
           </button>
 
           <button onClick={onQueueDequeue} className="pill-btn warn">
             <Minus size={14} />
-            <span>Dequeue</span>
+            <span>{t.queue.dequeue}</span>
           </button>
 
           <button onClick={onQueuePeek} className="pill-btn secondary">
             <Eye size={14} />
-            <span>Peek Front</span>
+            <span>{t.queue.peekFront}</span>
           </button>
 
-          <button onClick={onQueueReset} className="pill-btn subtle" title="Kuyruğu Sıfırla">
+          <button onClick={onQueueReset} className="pill-btn subtle" title={t.queue.clear}>
             <RotateCcw size={14} />
           </button>
         </div>
@@ -172,29 +175,29 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
               max={99}
               min={1}
             />
-            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+            <button onClick={handleRandomizeInput} className="stepper-btn" title={t.randomNum}>
               <Sparkles size={13} />
             </button>
           </div>
 
           <button onClick={() => onLLInsertHead?.(getNumericValue())} className="pill-btn primary">
-            <span>Başa Ekle</span>
+            <span>{t.linkedList.insertHead}</span>
           </button>
 
           <button onClick={() => onLLInsertTail?.(getNumericValue())} className="pill-btn primary">
-            <span>Sona Ekle</span>
+            <span>{t.linkedList.insertTail}</span>
           </button>
 
           <button onClick={() => onLLDelete?.(getNumericValue())} className="pill-btn warn">
-            <span>Sil ({getNumericValue()})</span>
+            <span>{t.linkedList.delete} ({getNumericValue()})</span>
           </button>
 
           <button onClick={() => onLLSearch?.(getNumericValue())} className="pill-btn secondary">
             <Search size={14} />
-            <span>Ara</span>
+            <span>{t.linkedList.search}</span>
           </button>
 
-          <button onClick={onLLReset} className="pill-btn subtle" title="Listeyi Sıfırla">
+          <button onClick={onLLReset} className="pill-btn subtle" title={t.reset}>
             <RotateCcw size={14} />
           </button>
         </div>
@@ -212,45 +215,45 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
               max={99}
               min={1}
             />
-            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+            <button onClick={handleRandomizeInput} className="stepper-btn" title={t.randomNum}>
               <Sparkles size={13} />
             </button>
           </div>
 
           <button onClick={() => onBSTInsert?.(getNumericValue())} className="pill-btn primary">
             <Plus size={14} />
-            <span>Ekle ({getNumericValue()})</span>
+            <span>{t.bst.insert} ({getNumericValue()})</span>
           </button>
 
           <button onClick={() => onBSTSearch?.(getNumericValue())} className="pill-btn secondary">
             <Search size={14} />
-            <span>Ara</span>
+            <span>{t.bst.search}</span>
           </button>
 
           <div className="traversal-pill-group">
             <button
               onClick={() => onBSTTraverse?.('inorder')}
               className="traversal-tab"
-              title="Küçükten Büyüğe Sıralı Gezinme"
+              title="In-Order Traversal"
             >
               <ListOrdered size={13} />
-              <span>In-Order</span>
+              <span>{t.bst.inorder}</span>
             </button>
 
             <button onClick={() => onBSTTraverse?.('preorder')} className="traversal-tab">
-              <span>Pre-Order</span>
+              <span>{t.bst.preorder}</span>
             </button>
 
             <button onClick={() => onBSTTraverse?.('postorder')} className="traversal-tab">
-              <span>Post-Order</span>
+              <span>{t.bst.postorder}</span>
             </button>
 
             <button onClick={() => onBSTTraverse?.('levelorder')} className="traversal-tab">
-              <span>BFS</span>
+              <span>{t.bst.levelorder}</span>
             </button>
           </div>
 
-          <button onClick={onBSTReset} className="pill-btn subtle" title="Ağacı Sıfırla">
+          <button onClick={onBSTReset} className="pill-btn subtle" title={t.reset}>
             <RotateCcw size={14} />
           </button>
         </div>
@@ -261,19 +264,19 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
         <div className="toolbar-row">
           <button onClick={onRandomizeArray} className="pill-btn primary">
             <Shuffle size={14} />
-            <span>Diziyi Karıştır</span>
+            <span>{t.randomize}</span>
           </button>
 
           <button onClick={() => onPresetArray?.('nearly-sorted')} className="pill-btn secondary">
-            <span>Neredeyse Sıralı</span>
+            <span>{t.nearlySorted}</span>
           </button>
 
           <button onClick={() => onPresetArray?.('reversed')} className="pill-btn secondary">
-            <span>Ters Sıralı</span>
+            <span>{t.reversed}</span>
           </button>
 
           <div className="size-slider-pill">
-            <span className="slider-text">Eleman: {arraySize}</span>
+            <span className="slider-text">{t.elements}: {arraySize}</span>
             <input
               type="range"
               min={6}
@@ -291,12 +294,12 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
         <div className="toolbar-row">
           {currentTarget !== undefined && (
             <div className="target-badge-pill">
-              <span className="target-title">ARANAN HEDEF:</span>
+              <span className="target-title">{t.target}</span>
               <span className="target-number">{currentTarget}</span>
               <button
                 onClick={onRandomizeTarget}
                 className="target-dice-btn"
-                title="Yeni Rastgele Hedef Seç"
+                title={t.newTarget}
               >
                 <Sparkles size={13} />
               </button>
@@ -305,11 +308,11 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
 
           <button onClick={onRandomizeArray} className="pill-btn secondary">
             <Shuffle size={14} />
-            <span>Yeni Dizi</span>
+            <span>{t.newArray}</span>
           </button>
 
           <div className="size-slider-pill">
-            <span className="slider-text">Boyut: {arraySize}</span>
+            <span className="slider-text">{t.size}: {arraySize}</span>
             <input
               type="range"
               min={6}

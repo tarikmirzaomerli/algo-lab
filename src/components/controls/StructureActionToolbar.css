@@ -3,10 +3,11 @@
   align-items: center;
   justify-content: center;
   padding: 0.6rem 1.25rem;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bg-card-muted, rgba(255, 255, 255, 0.75));
   backdrop-filter: blur(12px);
   border-bottom: 1.5px solid var(--border-tactile, #e6dfd5);
   box-sizing: border-box;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .toolbar-row {
@@ -20,11 +21,11 @@
 .input-stepper-box {
   display: inline-flex;
   align-items: center;
-  background: #ffffff;
+  background: var(--bg-card, #ffffff);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   border-radius: 9999px;
   padding: 2px 4px;
-  box-shadow: 0 1px 3px rgba(43, 38, 35, 0.04);
+  box-shadow: var(--shadow-tactile-sm);
 }
 
 .stepper-input {
@@ -37,6 +38,7 @@
   text-align: center;
   color: var(--text-primary, #2b2623);
   box-shadow: none !important;
+  outline: none;
 }
 
 .stepper-btn {
@@ -46,14 +48,15 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #f4efea;
+  background: var(--bg-canvas-subtle, #f4efea);
   color: var(--text-primary, #2b2623);
+  border: none;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .stepper-btn:hover {
-  background: #e6dfd5;
+  background: var(--border-tactile, #e6dfd5);
 }
 
 .pill-btn {
@@ -66,39 +69,40 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 3px rgba(43, 38, 35, 0.04);
+  box-shadow: var(--shadow-tactile-sm);
+  border: none;
 }
 
 .pill-btn.primary {
   background: var(--text-primary, #2b2623);
-  color: #f9f6f0;
+  color: var(--text-inverse, #f9f6f0);
 }
 
 .pill-btn.primary:hover {
-  background: #413a36;
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(43, 38, 35, 0.15);
+  box-shadow: var(--shadow-tactile-md);
 }
 
 .pill-btn.secondary {
-  background: #ffffff;
+  background: var(--bg-card, #ffffff);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   color: var(--text-primary, #2b2623);
 }
 
 .pill-btn.secondary:hover {
-  background: #fbf9f5;
-  border-color: #d8cebf;
+  background: var(--bg-canvas-subtle, #fbf9f5);
+  border-color: var(--text-muted, #d8cebf);
 }
 
 .pill-btn.warn {
-  background: #fdf1ed;
-  border: 1.5px solid #e8a996;
-  color: #c86d51;
+  background: var(--color-mutate-bg, #fdf1ed);
+  border: 1.5px solid var(--color-mutate-border, #e8a996);
+  color: var(--color-mutate, #c86d51);
 }
 
 .pill-btn.warn:hover {
-  background: #fae4dc;
+  opacity: 0.9;
 }
 
 .pill-btn.subtle {
@@ -106,13 +110,13 @@
   height: 32px;
   padding: 0;
   justify-content: center;
-  background: #fbf9f5;
+  background: var(--bg-card-muted, #fbf9f5);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   color: var(--text-secondary, #6e6760);
 }
 
 .pill-btn.subtle:hover {
-  background: #f4efea;
+  background: var(--bg-canvas-subtle, #f4efea);
   color: var(--text-primary, #2b2623);
 }
 
@@ -120,7 +124,7 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  background: #f4efea;
+  background: var(--bg-canvas-subtle, #f4efea);
   padding: 3px;
   border-radius: 9999px;
   border: 1px solid var(--border-tactile, #e6dfd5);
@@ -136,12 +140,13 @@
   font-weight: 700;
   color: var(--text-secondary, #6e6760);
   background: transparent;
+  border: none;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .traversal-tab:hover {
-  background: #ffffff;
+  background: var(--bg-card, #ffffff);
   color: var(--text-primary, #2b2623);
 }
 
@@ -150,10 +155,10 @@
   align-items: center;
   gap: 8px;
   padding: 0.35rem 0.85rem;
-  background: #ffffff;
+  background: var(--bg-card, #ffffff);
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   border-radius: 9999px;
-  box-shadow: 0 1px 3px rgba(43, 38, 35, 0.04);
+  box-shadow: var(--shadow-tactile-sm);
 }
 
 .slider-text {
@@ -174,23 +179,23 @@
   align-items: center;
   gap: 6px;
   padding: 0.3rem 0.85rem;
-  background: #ebf2eb;
-  border: 1.5px solid #a9c5a8;
+  background: var(--color-active-bg, #ebf2eb);
+  border: 1.5px solid var(--color-active-border, #a9c5a8);
   border-radius: 9999px;
-  box-shadow: 0 2px 5px rgba(94, 130, 93, 0.15);
+  box-shadow: var(--shadow-tactile-sm);
 }
 
 .target-title {
   font-size: 0.68rem;
   font-weight: 800;
-  color: #5e825d;
+  color: var(--color-active, #5e825d);
 }
 
 .target-number {
   font-family: var(--font-mono, monospace);
   font-size: 0.95rem;
   font-weight: 800;
-  color: #2e522d;
+  color: var(--text-primary, #2e522d);
 }
 
 .target-dice-btn {
@@ -200,8 +205,9 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #ffffff;
-  color: #2e522d;
+  background: var(--bg-card, #ffffff);
+  color: var(--color-active, #2e522d);
+  border: none;
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { VisualizerItemMetadata, StepSnapshot } from '../../engine/types';
+import type { Language, Translations } from '../../i18n/translations';
 import { X, Clock, HardDrive, Activity, Compass, CheckCircle2 } from 'lucide-react';
 import './CodeDrawer.css';
 
@@ -8,6 +9,8 @@ interface CodeDrawerProps {
   currentSnapshot?: StepSnapshot;
   isOpen: boolean;
   onClose: () => void;
+  lang: Language;
+  t: Translations;
 }
 
 export const CodeDrawer: React.FC<CodeDrawerProps> = ({
@@ -15,21 +18,50 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
   currentSnapshot,
   isOpen,
   onClose,
+  lang,
+  t,
 }) => {
   const activeLine = currentSnapshot?.codeLine ?? 1;
   const metrics = currentSnapshot?.metrics;
-  const statusNote = currentSnapshot?.statusNote || metadata.description;
   const pointers = currentSnapshot?.pointers || {};
+
+  const getItemLocalizedName = (): string => {
+    if (metadata.id === 'stack') return t.stack.name;
+    if (metadata.id === 'queue') return t.queue.name;
+    if (metadata.id === 'linked-list') return t.linkedList.name;
+    if (metadata.id === 'bst') return t.bst.name;
+    if (t.algoNames[metadata.id]) return t.algoNames[metadata.id].name;
+    return metadata.name;
+  };
+
+  const getItemLocalizedDesc = (): string => {
+    if (metadata.id === 'stack') return t.stack.desc;
+    if (metadata.id === 'queue') return t.queue.desc;
+    if (metadata.id === 'linked-list') return t.linkedList.desc;
+    if (metadata.id === 'bst') return t.bst.desc;
+    if (t.algoNames[metadata.id]) return t.algoNames[metadata.id].desc;
+    return metadata.description;
+  };
+
+  const statusNote = currentSnapshot?.statusNote || getItemLocalizedDesc();
 
   return (
     <aside className={`code-drawer ${isOpen ? 'open' : 'closed'}`}>
       {/* Drawer Header */}
       <div className="drawer-header">
         <div className="drawer-title-group">
-          <h2 className="drawer-title">{metadata.name}</h2>
-          <span className="drawer-kind-badge">{metadata.kind === 'structure' ? 'Veri Yapısı' : 'Algoritma'}</span>
+          <h2 className="drawer-title">{getItemLocalizedName()}</h2>
+          <span className="drawer-kind-badge">
+            {metadata.kind === 'structure'
+              ? lang === 'tr'
+                ? 'Veri Yapısı'
+                : 'Data Structure'
+              : lang === 'tr'
+              ? 'Algoritma'
+              : 'Algorithm'}
+          </span>
         </div>
-        <button onClick={onClose} className="drawer-close-btn" title="Kapat">
+        <button onClick={onClose} className="drawer-close-btn" title={t.close} aria-label="Close drawer">
           <X size={18} />
         </button>
       </div>
@@ -39,7 +71,7 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
         <div className="status-note-card">
           <div className="status-note-header">
             <Activity size={14} className="status-icon" />
-            <span className="status-header-title">CANLI ADIM DURUMU</span>
+            <span className="status-header-title">{t.liveStatus}</span>
           </div>
           <p className="status-note-text">{statusNote}</p>
         </div>
@@ -52,7 +84,7 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
               <Clock size={13} />
             </div>
             <div className="metric-info">
-              <span className="metric-label">Zaman Karmaşıklığı</span>
+              <span className="metric-label">{t.timeComplexity}</span>
               <span className="metric-val">{metadata.complexity.time.average}</span>
             </div>
           </div>
@@ -63,7 +95,7 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
               <HardDrive size={13} />
             </div>
             <div className="metric-info">
-              <span className="metric-label">Alan Karmaşıklığı</span>
+              <span className="metric-label">{t.spaceComplexity}</span>
               <span className="metric-val">{metadata.complexity.space}</span>
             </div>
           </div>
@@ -74,7 +106,7 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
               <Activity size={13} />
             </div>
             <div className="metric-info">
-              <span className="metric-label">Karşılaştırma</span>
+              <span className="metric-label">{t.comparisons}</span>
               <span className="metric-val">{metrics?.comparisons ?? 0}</span>
             </div>
           </div>
@@ -85,8 +117,12 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
               <CheckCircle2 size={13} />
             </div>
             <div className="metric-info">
-              <span className="metric-label">{metrics?.swaps !== undefined ? 'Takas (Swap)' : 'İşlem Sayısı'}</span>
-              <span className="metric-val">{metrics?.swaps !== undefined ? metrics.swaps : (metrics?.operations ?? 0)}</span>
+              <span className="metric-label">
+                {metrics?.swaps !== undefined ? t.swaps : t.operations}
+              </span>
+              <span className="metric-val">
+                {metrics?.swaps !== undefined ? metrics.swaps : (metrics?.operations ?? 0)}
+              </span>
             </div>
           </div>
         </div>
@@ -96,7 +132,7 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
           <div className="pointers-section">
             <div className="section-title">
               <Compass size={13} />
-              <span>CANLI İŞARETÇİLER</span>
+              <span>{t.livePointers}</span>
             </div>
             <div className="pointer-badges-wrap">
               {Object.entries(pointers).map(([key, val]) => (
@@ -112,7 +148,7 @@ export const CodeDrawer: React.FC<CodeDrawerProps> = ({
         {/* 4. Synchronized Pseudocode */}
         <div className="pseudocode-section">
           <div className="section-title">
-            <span>SÖZDE KOD (PSEUDOCODE)</span>
+            <span>{t.pseudocodeTitle}</span>
           </div>
 
           <div className="pseudocode-box">
