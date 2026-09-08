@@ -16,19 +16,21 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   isDrawerOpen,
   onToggleDrawer,
 }) => {
+  const currentCategory =
+    CATEGORY_GROUPS.find((group) => group.itemIds.includes(selectedItemId)) || CATEGORY_GROUPS[2];
 
   const getCategoryIcon = (categoryId: string) => {
     switch (categoryId) {
       case 'linear':
-        return <Layers size={16} />;
+        return <Layers size={15} />;
       case 'tree':
-        return <GitFork size={16} />;
+        return <GitFork size={15} />;
       case 'sorting':
-        return <ArrowDownUp size={16} />;
+        return <ArrowDownUp size={15} />;
       case 'searching':
-        return <Search size={16} />;
+        return <Search size={15} />;
       default:
-        return <Layers size={16} />;
+        return <Layers size={15} />;
     }
   };
 
@@ -43,53 +45,48 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
         </div>
       </div>
 
-      {/* Category Pills & Selector */}
-      <div className="nav-category-pills">
+      {/* Simplified Category Tabs */}
+      <nav className="nav-category-pills" aria-label="Ana Kategoriler">
         {CATEGORY_GROUPS.map((group) => {
-          const isCategoryActive = group.itemIds.includes(selectedItemId);
+          const isCategoryActive = group.id === currentCategory.id;
 
           return (
-            <div key={group.id} className="category-group-wrapper">
-              <div
-                className={`category-pill ${isCategoryActive ? 'active' : ''}`}
-                onClick={() => {
-                  if (!isCategoryActive) {
-                    onSelectItem(group.itemIds[0]);
-                  }
-                }}
-              >
-                <span className="category-icon">{getCategoryIcon(group.id)}</span>
-                <span className="category-name">{group.name}</span>
-              </div>
-            </div>
+            <button
+              key={group.id}
+              className={`category-pill ${isCategoryActive ? 'active' : ''}`}
+              onClick={() => {
+                if (!isCategoryActive) {
+                  onSelectItem(group.itemIds[0]);
+                }
+              }}
+            >
+              <span className="category-icon">{getCategoryIcon(group.id)}</span>
+              <span className="category-name">{group.name}</span>
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* Active Sub-item Pills inside category */}
+      <div className="nav-item-pills-row">
+        {currentCategory.itemIds.map((itemId) => {
+          const item = ALL_VISUALIZER_ITEMS[itemId];
+          const isItemActive = itemId === selectedItemId;
+
+          return (
+            <button
+              key={itemId}
+              onClick={() => onSelectItem(itemId)}
+              className={`item-pill ${isItemActive ? 'active' : ''}`}
+            >
+              <span>{item.shortName}</span>
+            </button>
           );
         })}
       </div>
 
-      {/* Current Item Dropdown & Controls */}
-      <div className="nav-action-group">
-        <div className="item-select-wrapper">
-          <select
-            value={selectedItemId}
-            onChange={(e) => onSelectItem(e.target.value)}
-            className="item-select-dropdown"
-          >
-            {CATEGORY_GROUPS.map((group) => (
-              <optgroup key={group.id} label={group.name}>
-                {group.itemIds.map((itemId) => {
-                  const item = ALL_VISUALIZER_ITEMS[itemId];
-                  return (
-                    <option key={itemId} value={itemId}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </optgroup>
-            ))}
-          </select>
-        </div>
-
-        {/* Toggle Code & Metrics Drawer */}
+      {/* Code Drawer Toggle */}
+      <div className="nav-right-actions">
         <button
           onClick={onToggleDrawer}
           className={`drawer-toggle-btn ${isDrawerOpen ? 'active' : ''}`}

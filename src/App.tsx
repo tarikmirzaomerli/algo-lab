@@ -52,6 +52,9 @@ import { generateQuickSortSnapshots } from './algorithms/sorting/quickSort';
 import { generateMergeSortSnapshots } from './algorithms/sorting/mergeSort';
 import { generateLinearSearchSnapshots } from './algorithms/searching/linearSearch';
 import { generateBinarySearchSnapshots } from './algorithms/searching/binarySearch';
+import { generateJumpSearchSnapshots } from './algorithms/searching/jumpSearch';
+import { generateInterpolationSearchSnapshots } from './algorithms/searching/interpolationSearch';
+import { generateExponentialSearchSnapshots } from './algorithms/searching/exponentialSearch';
 
 // Layout & Controls
 import { TopNavBar } from './components/layout/TopNavBar';
@@ -138,6 +141,21 @@ export const App: React.FC = () => {
         case 'binary-search': {
           const sorted = [...customArr].sort((a, b) => a - b);
           generatedSnapshots = generateBinarySearchSnapshots(sorted, customTarget);
+          break;
+        }
+        case 'jump-search': {
+          const sorted = [...customArr].sort((a, b) => a - b);
+          generatedSnapshots = generateJumpSearchSnapshots(sorted, customTarget);
+          break;
+        }
+        case 'interpolation-search': {
+          const sorted = [...customArr].sort((a, b) => a - b);
+          generatedSnapshots = generateInterpolationSearchSnapshots(sorted, customTarget);
+          break;
+        }
+        case 'exponential-search': {
+          const sorted = [...customArr].sort((a, b) => a - b);
+          generatedSnapshots = generateExponentialSearchSnapshots(sorted, customTarget);
           break;
         }
         default:
@@ -349,6 +367,9 @@ export const App: React.FC = () => {
   };
 
   const currentMetadata = getItemMetadata(selectedItemId);
+  const isSortedSearch = ['binary-search', 'jump-search', 'interpolation-search', 'exponential-search'].includes(
+    selectedItemId
+  );
 
   return (
     <div className="algo-lab-app">
@@ -428,7 +449,7 @@ export const App: React.FC = () => {
               <ArrayVisualizer
                 snapshot={currentSnapshot as StepSnapshot<ArrayAlgorithmState>}
                 initialArray={
-                  selectedItemId === 'binary-search'
+                  isSortedSearch
                     ? [...initialArray].sort((a, b) => a - b)
                     : initialArray
                 }

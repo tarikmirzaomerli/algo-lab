@@ -2,18 +2,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
-  padding: 0 1.5rem;
+  height: 64px;
+  padding: 0 1.25rem;
   background-color: var(--bg-card, #ffffff);
   border-bottom: 1.5px solid var(--border-tactile, #e6dfd5);
-  box-shadow: var(--shadow-tactile-sm);
+  box-shadow: 0 2px 8px rgba(43, 38, 35, 0.04);
   z-index: 20;
   box-sizing: border-box;
+  gap: 1rem;
 }
 
 .nav-brand-group {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .brand-logo-pill {
@@ -24,6 +26,7 @@
   background: #fbf9f5;
   border: 1.5px solid var(--border-tactile, #e6dfd5);
   border-radius: 9999px;
+  box-shadow: var(--shadow-tactile-sm);
 }
 
 .logo-icon-dot {
@@ -31,7 +34,7 @@
   height: 10px;
   border-radius: 50%;
   background: var(--color-active, #5e825d);
-  box-shadow: 0 0 0 3px rgba(94, 130, 93, 0.2);
+  box-shadow: 0 0 0 3px rgba(94, 130, 93, 0.25);
 }
 
 .logo-text {
@@ -42,35 +45,37 @@
 }
 
 .logo-version-tag {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
   padding: 1px 5px;
   background: #2b2623;
   color: #f9f6f0;
   border-radius: 4px;
+  letter-spacing: 0.05em;
 }
 
 .nav-category-pills {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background: #f4efea;
-  padding: 4px;
+  padding: 3px 4px;
   border-radius: 10px;
   border: 1px solid var(--border-tactile, #e6dfd5);
+  flex-shrink: 0;
 }
 
 .category-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 0.35rem 0.85rem;
-  border-radius: 8px;
-  font-size: 0.825rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 7px;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-secondary, #6e6760);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.18s ease;
 }
 
 .category-pill:hover {
@@ -81,24 +86,49 @@
 .category-pill.active {
   background: #ffffff;
   color: var(--text-primary, #2b2623);
-  box-shadow: 0 2px 6px rgba(43, 38, 35, 0.08);
+  box-shadow: 0 2px 5px rgba(43, 38, 35, 0.08);
   font-weight: 700;
 }
 
-.nav-action-group {
+.nav-item-pills-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0;
 }
 
-.item-select-dropdown {
-  font-weight: 700;
-  padding: 0.45rem 1rem;
-  background: #fbf9f5;
-  border: 1.5px solid var(--border-tactile, #e6dfd5);
+.item-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.32rem 0.75rem;
   border-radius: 8px;
-  color: var(--text-primary, #2b2623);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #fbf9f5;
+  border: 1px solid var(--border-tactile, #e6dfd5);
+  color: var(--text-secondary, #6e6760);
   cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+.item-pill:hover {
+  background: #f4efea;
+  color: var(--text-primary, #2b2623);
+}
+
+.item-pill.active {
+  background: #2b2623;
+  border-color: #2b2623;
+  color: #f9f6f0;
+  box-shadow: 0 2px 6px rgba(43, 38, 35, 0.15);
+}
+
+.nav-right-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .drawer-toggle-btn {

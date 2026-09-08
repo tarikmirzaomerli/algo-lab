@@ -3,7 +3,7 @@ import {
   Plus,
   Minus,
   Eye,
-  Trash2,
+  RotateCcw,
   Shuffle,
   Search,
   Sparkles,
@@ -13,28 +13,28 @@ import './StructureActionToolbar.css';
 
 interface StructureActionToolbarProps {
   selectedItemId: string;
-  // Stack actions
+  // Stack
   onStackPush?: (val: number) => void;
   onStackPop?: () => void;
   onStackPeek?: () => void;
   onStackReset?: () => void;
-  // Queue actions
+  // Queue
   onQueueEnqueue?: (val: number) => void;
   onQueueDequeue?: () => void;
   onQueuePeek?: () => void;
   onQueueReset?: () => void;
-  // Linked List actions
+  // Linked List
   onLLInsertHead?: (val: number) => void;
   onLLInsertTail?: (val: number) => void;
   onLLDelete?: (val: number) => void;
   onLLSearch?: (val: number) => void;
   onLLReset?: () => void;
-  // BST actions
+  // BST
   onBSTInsert?: (val: number) => void;
   onBSTSearch?: (val: number) => void;
   onBSTTraverse?: (order: 'inorder' | 'preorder' | 'postorder' | 'levelorder') => void;
   onBSTReset?: () => void;
-  // Sorting / Searching actions
+  // Sorting / Searching
   arraySize?: number;
   onSetArraySize?: (size: number) => void;
   onRandomizeArray?: () => void;
@@ -63,7 +63,7 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
   onBSTSearch,
   onBSTTraverse,
   onBSTReset,
-  arraySize = 12,
+  arraySize = 10,
   onSetArraySize,
   onRandomizeArray,
   onPresetArray,
@@ -71,7 +71,7 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
   onRandomizeTarget,
   onSetCustomTarget: _onSetCustomTarget,
 }) => {
-  const [inputValue, setInputValue] = useState<string>('50');
+  const [inputValue, setInputValue] = useState<string>('45');
 
   const getNumericValue = () => {
     const parsed = parseInt(inputValue, 10);
@@ -84,290 +84,241 @@ export const StructureActionToolbar: React.FC<StructureActionToolbarProps> = ({
 
   return (
     <div className="action-toolbar-container">
-      {/* 1. STACK TOOLBAR */}
+      {/* 1. STACK CONTROLS */}
       {selectedItemId === 'stack' && (
         <div className="toolbar-row">
-          <div className="input-with-stepper">
+          <div className="input-stepper-box">
             <input
               type="number"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Değer"
-              className="toolbar-num-input"
+              className="stepper-input"
               max={99}
               min={1}
             />
-            <button
-              onClick={handleRandomizeInput}
-              className="action-icon-btn"
-              title="Rastgele Değer"
-            >
-              <Sparkles size={14} />
+            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+              <Sparkles size={13} />
             </button>
           </div>
 
-          <button
-            onClick={() => onStackPush?.(getNumericValue())}
-            className="toolbar-btn primary"
-          >
-            <Plus size={15} />
+          <button onClick={() => onStackPush?.(getNumericValue())} className="pill-btn primary">
+            <Plus size={14} />
             <span>Push ({getNumericValue()})</span>
           </button>
 
-          <button onClick={onStackPop} className="toolbar-btn warn">
-            <Minus size={15} />
+          <button onClick={onStackPop} className="pill-btn warn">
+            <Minus size={14} />
             <span>Pop</span>
           </button>
 
-          <button onClick={onStackPeek} className="toolbar-btn secondary">
-            <Eye size={15} />
+          <button onClick={onStackPeek} className="pill-btn secondary">
+            <Eye size={14} />
             <span>Peek</span>
           </button>
 
-          <button onClick={onStackReset} className="toolbar-btn secondary">
-            <Trash2 size={15} />
-            <span>Sıfırla</span>
+          <button onClick={onStackReset} className="pill-btn subtle" title="Yığını Sıfırla">
+            <RotateCcw size={14} />
           </button>
         </div>
       )}
 
-      {/* 2. QUEUE TOOLBAR */}
+      {/* 2. QUEUE CONTROLS */}
       {selectedItemId === 'queue' && (
         <div className="toolbar-row">
-          <div className="input-with-stepper">
+          <div className="input-stepper-box">
             <input
               type="number"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Değer"
-              className="toolbar-num-input"
+              className="stepper-input"
               max={99}
               min={1}
             />
-            <button
-              onClick={handleRandomizeInput}
-              className="action-icon-btn"
-              title="Rastgele Değer"
-            >
-              <Sparkles size={14} />
+            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+              <Sparkles size={13} />
             </button>
           </div>
 
-          <button
-            onClick={() => onQueueEnqueue?.(getNumericValue())}
-            className="toolbar-btn primary"
-          >
-            <Plus size={15} />
+          <button onClick={() => onQueueEnqueue?.(getNumericValue())} className="pill-btn primary">
+            <Plus size={14} />
             <span>Enqueue ({getNumericValue()})</span>
           </button>
 
-          <button onClick={onQueueDequeue} className="toolbar-btn warn">
-            <Minus size={15} />
+          <button onClick={onQueueDequeue} className="pill-btn warn">
+            <Minus size={14} />
             <span>Dequeue</span>
           </button>
 
-          <button onClick={onQueuePeek} className="toolbar-btn secondary">
-            <Eye size={15} />
+          <button onClick={onQueuePeek} className="pill-btn secondary">
+            <Eye size={14} />
             <span>Peek Front</span>
           </button>
 
-          <button onClick={onQueueReset} className="toolbar-btn secondary">
-            <Trash2 size={15} />
-            <span>Sıfırla</span>
+          <button onClick={onQueueReset} className="pill-btn subtle" title="Kuyruğu Sıfırla">
+            <RotateCcw size={14} />
           </button>
         </div>
       )}
 
-      {/* 3. LINKED LIST TOOLBAR */}
+      {/* 3. LINKED LIST CONTROLS */}
       {selectedItemId === 'linked-list' && (
         <div className="toolbar-row">
-          <div className="input-with-stepper">
+          <div className="input-stepper-box">
             <input
               type="number"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Değer"
-              className="toolbar-num-input"
+              className="stepper-input"
               max={99}
               min={1}
             />
-            <button
-              onClick={handleRandomizeInput}
-              className="action-icon-btn"
-              title="Rastgele Değer"
-            >
-              <Sparkles size={14} />
+            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+              <Sparkles size={13} />
             </button>
           </div>
 
-          <button
-            onClick={() => onLLInsertHead?.(getNumericValue())}
-            className="toolbar-btn primary"
-          >
+          <button onClick={() => onLLInsertHead?.(getNumericValue())} className="pill-btn primary">
             <span>Başa Ekle</span>
           </button>
 
-          <button
-            onClick={() => onLLInsertTail?.(getNumericValue())}
-            className="toolbar-btn primary"
-          >
+          <button onClick={() => onLLInsertTail?.(getNumericValue())} className="pill-btn primary">
             <span>Sona Ekle</span>
           </button>
 
-          <button
-            onClick={() => onLLDelete?.(getNumericValue())}
-            className="toolbar-btn warn"
-          >
+          <button onClick={() => onLLDelete?.(getNumericValue())} className="pill-btn warn">
             <span>Sil ({getNumericValue()})</span>
           </button>
 
-          <button
-            onClick={() => onLLSearch?.(getNumericValue())}
-            className="toolbar-btn secondary"
-          >
-            <Search size={15} />
+          <button onClick={() => onLLSearch?.(getNumericValue())} className="pill-btn secondary">
+            <Search size={14} />
             <span>Ara</span>
           </button>
 
-          <button onClick={onLLReset} className="toolbar-btn secondary">
-            <Trash2 size={15} />
-            <span>Örnek Liste</span>
+          <button onClick={onLLReset} className="pill-btn subtle" title="Listeyi Sıfırla">
+            <RotateCcw size={14} />
           </button>
         </div>
       )}
 
-      {/* 4. BST TOOLBAR */}
+      {/* 4. BST CONTROLS */}
       {selectedItemId === 'bst' && (
         <div className="toolbar-row">
-          <div className="input-with-stepper">
+          <div className="input-stepper-box">
             <input
               type="number"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Değer"
-              className="toolbar-num-input"
+              className="stepper-input"
               max={99}
               min={1}
             />
-            <button
-              onClick={handleRandomizeInput}
-              className="action-icon-btn"
-              title="Rastgele Değer"
-            >
-              <Sparkles size={14} />
+            <button onClick={handleRandomizeInput} className="stepper-btn" title="Rastgele Sayı">
+              <Sparkles size={13} />
             </button>
           </div>
 
-          <button
-            onClick={() => onBSTInsert?.(getNumericValue())}
-            className="toolbar-btn primary"
-          >
-            <Plus size={15} />
+          <button onClick={() => onBSTInsert?.(getNumericValue())} className="pill-btn primary">
+            <Plus size={14} />
             <span>Ekle ({getNumericValue()})</span>
           </button>
 
-          <button
-            onClick={() => onBSTSearch?.(getNumericValue())}
-            className="toolbar-btn secondary"
-          >
-            <Search size={15} />
+          <button onClick={() => onBSTSearch?.(getNumericValue())} className="pill-btn secondary">
+            <Search size={14} />
             <span>Ara</span>
           </button>
 
-          {/* Traversal Selector */}
-          <div className="traversal-select-group">
+          <div className="traversal-pill-group">
             <button
               onClick={() => onBSTTraverse?.('inorder')}
-              className="toolbar-btn traversal-btn"
-              title="Küçükten büyüğe sıralı gezinme"
+              className="traversal-tab"
+              title="Küçükten Büyüğe Sıralı Gezinme"
             >
-              <ListOrdered size={14} />
+              <ListOrdered size={13} />
               <span>In-Order</span>
             </button>
 
-            <button
-              onClick={() => onBSTTraverse?.('preorder')}
-              className="toolbar-btn traversal-btn"
-            >
+            <button onClick={() => onBSTTraverse?.('preorder')} className="traversal-tab">
               <span>Pre-Order</span>
             </button>
 
-            <button
-              onClick={() => onBSTTraverse?.('postorder')}
-              className="toolbar-btn traversal-btn"
-            >
+            <button onClick={() => onBSTTraverse?.('postorder')} className="traversal-tab">
               <span>Post-Order</span>
             </button>
 
-            <button
-              onClick={() => onBSTTraverse?.('levelorder')}
-              className="toolbar-btn traversal-btn"
-            >
-              <span>Level-Order (BFS)</span>
+            <button onClick={() => onBSTTraverse?.('levelorder')} className="traversal-tab">
+              <span>BFS</span>
             </button>
           </div>
 
-          <button onClick={onBSTReset} className="toolbar-btn secondary">
-            <Trash2 size={15} />
-            <span>Örnek Ağaç</span>
+          <button onClick={onBSTReset} className="pill-btn subtle" title="Ağacı Sıfırla">
+            <RotateCcw size={14} />
           </button>
         </div>
       )}
 
-      {/* 5. SORTING & SEARCHING TOOLBAR */}
-      {(selectedItemId.includes('sort') || selectedItemId.includes('search')) && (
+      {/* 5. SORTING CONTROLS */}
+      {selectedItemId.includes('sort') && (
         <div className="toolbar-row">
-          {/* Size Slider */}
-          <div className="slider-pill-group">
-            <span className="slider-label">Boyut: {arraySize}</span>
-            <input
-              type="range"
-              min={6}
-              max={24}
-              value={arraySize}
-              onChange={(e) => onSetArraySize?.(Number(e.target.value))}
-              className="size-slider"
-            />
-          </div>
-
-          {/* Preset Buttons */}
-          <button
-            onClick={onRandomizeArray}
-            className="toolbar-btn secondary"
-            title="Rastgele Dizi Üret"
-          >
+          <button onClick={onRandomizeArray} className="pill-btn primary">
             <Shuffle size={14} />
-            <span>Karıştır</span>
+            <span>Diziyi Karıştır</span>
           </button>
 
-          <button
-            onClick={() => onPresetArray?.('nearly-sorted')}
-            className="toolbar-btn secondary"
-          >
+          <button onClick={() => onPresetArray?.('nearly-sorted')} className="pill-btn secondary">
             <span>Neredeyse Sıralı</span>
           </button>
 
-          <button
-            onClick={() => onPresetArray?.('reversed')}
-            className="toolbar-btn secondary"
-          >
+          <button onClick={() => onPresetArray?.('reversed')} className="pill-btn secondary">
             <span>Ters Sıralı</span>
           </button>
 
-          {/* For Searching: Target Value */}
-          {selectedItemId.includes('search') && currentTarget !== undefined && (
-            <div className="search-target-pill">
-              <span className="target-label">HEDEF:</span>
-              <span className="target-val">{currentTarget}</span>
+          <div className="size-slider-pill">
+            <span className="slider-text">Eleman: {arraySize}</span>
+            <input
+              type="range"
+              min={6}
+              max={20}
+              value={arraySize}
+              onChange={(e) => onSetArraySize?.(Number(e.target.value))}
+              className="pill-range-slider"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 6. SEARCHING CONTROLS (All 5 Algorithms) */}
+      {selectedItemId.includes('search') && (
+        <div className="toolbar-row">
+          {currentTarget !== undefined && (
+            <div className="target-badge-pill">
+              <span className="target-title">ARANAN HEDEF:</span>
+              <span className="target-number">{currentTarget}</span>
               <button
                 onClick={onRandomizeTarget}
-                className="action-icon-btn"
-                title="Yeni Hedef Seç"
+                className="target-dice-btn"
+                title="Yeni Rastgele Hedef Seç"
               >
                 <Sparkles size={13} />
               </button>
             </div>
           )}
+
+          <button onClick={onRandomizeArray} className="pill-btn secondary">
+            <Shuffle size={14} />
+            <span>Yeni Dizi</span>
+          </button>
+
+          <div className="size-slider-pill">
+            <span className="slider-text">Boyut: {arraySize}</span>
+            <input
+              type="range"
+              min={6}
+              max={20}
+              value={arraySize}
+              onChange={(e) => onSetArraySize?.(Number(e.target.value))}
+              className="pill-range-slider"
+            />
+          </div>
         </div>
       )}
     </div>

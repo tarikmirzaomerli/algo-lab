@@ -10,6 +10,9 @@ import { QUICK_SORT_METADATA } from './sorting/quickSort';
 import { MERGE_SORT_METADATA } from './sorting/mergeSort';
 import { LINEAR_SEARCH_METADATA } from './searching/linearSearch';
 import { BINARY_SEARCH_METADATA } from './searching/binarySearch';
+import { JUMP_SEARCH_METADATA } from './searching/jumpSearch';
+import { INTERPOLATION_SEARCH_METADATA } from './searching/interpolationSearch';
+import { EXPONENTIAL_SEARCH_METADATA } from './searching/exponentialSearch';
 
 export const ALL_VISUALIZER_ITEMS: Record<string, VisualizerItemMetadata> = {
   // Linear Data Structures
@@ -27,9 +30,12 @@ export const ALL_VISUALIZER_ITEMS: Record<string, VisualizerItemMetadata> = {
   'quick-sort': QUICK_SORT_METADATA,
   'merge-sort': MERGE_SORT_METADATA,
 
-  // Searching
+  // Searching (All 5 Algorithms)
   'linear-search': LINEAR_SEARCH_METADATA,
   'binary-search': BINARY_SEARCH_METADATA,
+  'jump-search': JUMP_SEARCH_METADATA,
+  'interpolation-search': INTERPOLATION_SEARCH_METADATA,
+  'exponential-search': EXPONENTIAL_SEARCH_METADATA,
 };
 
 export interface CategoryGroup {
@@ -62,7 +68,13 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
     id: 'searching',
     name: 'Arama Algoritmaları',
     icon: 'Search',
-    itemIds: ['linear-search', 'binary-search'],
+    itemIds: [
+      'linear-search',
+      'binary-search',
+      'jump-search',
+      'interpolation-search',
+      'exponential-search',
+    ],
   },
 ];
 
