@@ -1,0 +1,122 @@
+.top-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 1.5rem;
+  background-color: var(--bg-card, #ffffff);
+  border-bottom: 1.5px solid var(--border-tactile, #e6dfd5);
+  box-shadow: var(--shadow-tactile-sm);
+  z-index: 20;
+  box-sizing: border-box;
+}
+
+.nav-brand-group {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.35rem 0.85rem;
+  background: #fbf9f5;
+  border: 1.5px solid var(--border-tactile, #e6dfd5);
+  border-radius: 9999px;
+}
+
+.logo-icon-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-active, #5e825d);
+  box-shadow: 0 0 0 3px rgba(94, 130, 93, 0.2);
+}
+
+.logo-text {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #2b2623);
+}
+
+.logo-version-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  background: #2b2623;
+  color: #f9f6f0;
+  border-radius: 4px;
+}
+
+.nav-category-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f4efea;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border-tactile, #e6dfd5);
+}
+
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-secondary, #6e6760);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-pill:hover {
+  color: var(--text-primary, #2b2623);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.category-pill.active {
+  background: #ffffff;
+  color: var(--text-primary, #2b2623);
+  box-shadow: 0 2px 6px rgba(43, 38, 35, 0.08);
+  font-weight: 700;
+}
+
+.nav-action-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-select-dropdown {
+  font-weight: 700;
+  padding: 0.45rem 1rem;
+  background: #fbf9f5;
+  border: 1.5px solid var(--border-tactile, #e6dfd5);
+  border-radius: 8px;
+  color: var(--text-primary, #2b2623);
+  cursor: pointer;
+}
+
+.drawer-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 0.85rem;
+  background: #fbf9f5;
+  border: 1.5px solid var(--border-tactile, #e6dfd5);
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--text-secondary, #6e6760);
+}
+
+.drawer-toggle-btn:hover,
+.drawer-toggle-btn.active {
+  background: #ebf2eb;
+  border-color: #a9c5a8;
+  color: #2e522d;
+}

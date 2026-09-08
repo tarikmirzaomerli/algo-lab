@@ -1,0 +1,204 @@
+.linked-list-visualizer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.ll-status-ribbon {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.ll-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-tactile, #e6dfd5);
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-primary, #2b2623);
+  box-shadow: 0 2px 5px rgba(43, 38, 35, 0.04);
+}
+
+.ll-badge-pill.secondary {
+  background: #f4efea;
+  color: var(--text-secondary, #6e6760);
+}
+
+.chain-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 1.5rem 1rem;
+}
+
+.head-marker-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 6px;
+  margin-left: 20px;
+}
+
+.head-badge {
+  background: #2b2623;
+  color: #f9f6f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.head-arrow {
+  color: #c88e32;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.chain-nodes-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.empty-list-card {
+  padding: 1.5rem 2rem;
+  border: 2px dashed #e6dfd5;
+  border-radius: 12px;
+  color: var(--text-muted, #a49c94);
+  font-weight: 600;
+}
+
+.node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.node-index-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted, #a49c94);
+  margin-bottom: 4px;
+}
+
+.node-box {
+  display: flex;
+  width: 90px;
+  height: 54px;
+  background: #ffffff;
+  border: 2px solid var(--border-tactile, #e6dfd5);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(43, 38, 35, 0.06);
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.node-box.node-active {
+  border-color: #5e825d;
+  box-shadow: 0 0 0 3px rgba(94, 130, 93, 0.2);
+}
+
+.node-box.node-traverse {
+  border-color: #c88e32;
+  background: #fef7eb;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(200, 142, 50, 0.25);
+}
+
+.node-box.node-found {
+  border-color: #4a6b53;
+  background: #eef5f0;
+  transform: scale(1.06);
+  box-shadow: 0 0 0 4px rgba(74, 107, 83, 0.3);
+}
+
+.node-box.node-insert {
+  border-color: #c86d51;
+  background: #fdf1ed;
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 0 8px 16px rgba(200, 109, 81, 0.25);
+}
+
+.node-val-compartment {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1.5px solid var(--border-tactile, #e6dfd5);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--text-primary, #2b2623);
+}
+
+.node-next-compartment {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fbf9f5;
+  color: #c88e32;
+  font-size: 0.85rem;
+}
+
+.ghost-node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  animation: ghostFloat 1s ease-in-out infinite alternate;
+}
+
+.ghost-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #c86d51;
+  margin-bottom: 4px;
+}
+
+.node-box.ghost-active {
+  border-color: #c86d51;
+  background: #fdf1ed;
+}
+
+.connector-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+}
+
+.connector-svg {
+  display: block;
+}
+
+.null-terminator-box {
+  padding: 0.5rem 0.85rem;
+  background: #2b2623;
+  color: #f9f6f0;
+  border-radius: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 6px rgba(43, 38, 35, 0.15);
+}
+
+@keyframes ghostFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}

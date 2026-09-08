@@ -1,32 +1,57 @@
 :root {
-  --bg-main: #0b0f19;
-  --bg-card: #111827;
-  --bg-card-elevated: #1f2937;
-  --bg-sidebar: #0e1626;
-  --border-color: #1e293b;
-  --border-active: #3b82f6;
+  /* Warm Earthy & Minimalist Paper Palette */
+  --bg-canvas: #f9f6f0;
+  --bg-canvas-subtle: #f4efea;
+  --bg-card: #ffffff;
+  --bg-card-muted: #fbf9f5;
+  --bg-dock: #ffffff;
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  /* Typography & Structure */
+  --text-primary: #2b2623;
+  --text-secondary: #6e6760;
+  --text-muted: #a49c94;
+  --text-inverse: #f9f6f0;
 
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
+  /* Tactile Borders & Lines */
+  --border-tactile: #e6dfd5;
+  --border-subtle: #eee9e0;
+  --border-strong: #2b2623;
 
-  /* Bar states */
-  --bar-default: #3b82f6;
-  --bar-compare: #f59e0b; /* Amber */
-  --bar-swap: #ef4444;    /* Red */
-  --bar-sorted: #10b981;  /* Emerald Green */
-  --bar-pivot: #a855f7;   /* Purple */
-  --bar-subrange: #38bdf8;/* Sky Blue */
-  --bar-active: #06b6d4;  /* Vibrant Cyan / Turquoise */
+  /* State Colors */
+  --color-active: #5e825d;
+  --color-active-bg: #ebf2eb;
+  --color-active-border: #a9c5a8;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+  --color-mutate: #c86d51;
+  --color-mutate-bg: #fdf1ed;
+  --color-mutate-border: #e8a996;
 
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-mono: 'JetBrains Mono', Consolas, Monaco, monospace;
+  --color-settled: #4a6b53;
+  --color-settled-bg: #eef5f0;
+  --color-settled-border: #9fc4a7;
+
+  --color-pointer: #c88e32;
+  --color-pointer-bg: #fef7eb;
+  --color-pointer-border: #eed09d;
+
+  /* Shadows */
+  --shadow-tactile-sm: 0 2px 4px rgba(43, 38, 35, 0.04);
+  --shadow-tactile-md: 0 4px 12px rgba(43, 38, 35, 0.06), 0 1px 3px rgba(43, 38, 35, 0.04);
+  --shadow-tactile-lg: 0 10px 25px rgba(43, 38, 35, 0.08), 0 3px 6px rgba(43, 38, 35, 0.04);
+
+  /* Fonts */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: radial-gradient(#e6dfd5 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
 }

@@ -1,0 +1,38 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(94, 130, 93, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(94, 130, 93, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(94, 130, 93, 0);
+  }
+}
+
+@keyframes codeLineGlow {
+  0% {
+    background-color: rgba(94, 130, 93, 0.15);
+  }
+  50% {
+    background-color: rgba(94, 130, 93, 0.28);
+  }
+  100% {
+    background-color: rgba(94, 130, 93, 0.15);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

@@ -1,124 +1,466 @@
-import React, { useState } from 'react';
-import { Header } from './components/layout/Header';
-import { Sidebar } from './components/layout/Sidebar';
-import { ArrayVisualizer } from './components/visualizer/ArrayVisualizer';
-import { GraphVisualizer } from './components/visualizer/GraphVisualizer';
-import { StepExplanationPanel } from './components/panels/StepExplanationPanel';
-import { InfoPanel } from './components/panels/InfoPanel';
-import { ControlBar } from './components/controls/ControlBar';
-import { useAlgorithmRunner } from './hooks/useAlgorithmRunner';
-import type { AlgorithmStep } from './types/event';
-import type { GraphAlgorithmStep } from './types/graph';
-import { BookOpen, Activity } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useVisualizerEngine } from './engine/useVisualizerEngine';
+import type { StepSnapshot } from './engine/types';
+import { getItemMetadata } from './algorithms/registry';
+
+// Data Structures
+import {
+  type StackState,
+  createInitialStack,
+  generateStackPushSnapshots,
+  generateStackPopSnapshots,
+  generateStackPeekSnapshots,
+} from './structures/stack/stackEngine';
+import { StackVisualizer } from './structures/stack/StackVisualizer';
+
+import {
+  type QueueState,
+  createInitialQueue,
+  generateQueueEnqueueSnapshots,
+  generateQueueDequeueSnapshots,
+  generateQueuePeekSnapshots,
+} from './structures/queue/queueEngine';
+import { QueueVisualizer } from './structures/queue/QueueVisualizer';
+
+import {
+  type LinkedListState,
+  createInitialLinkedList,
+  generateInsertHeadSnapshots,
+  generateInsertTailSnapshots,
+  generateDeleteNodeSnapshots,
+  generateSearchSnapshots,
+} from './structures/linkedList/linkedListEngine';
+import { LinkedListVisualizer } from './structures/linkedList/LinkedListVisualizer';
+
+import {
+  type BSTState,
+  createInitialBST,
+  generateBSTInsertSnapshots,
+  generateBSTSearchSnapshots,
+  generateBSTTraversalSnapshots,
+} from './structures/bst/bstEngine';
+import { BSTVisualizer } from './structures/bst/BSTVisualizer';
+
+// Algorithms
+import {
+  type ArrayAlgorithmState,
+  generateBubbleSortSnapshots,
+} from './algorithms/sorting/bubbleSort';
+import { generateSelectionSortSnapshots } from './algorithms/sorting/selectionSort';
+import { generateInsertionSortSnapshots } from './algorithms/sorting/insertionSort';
+import { generateQuickSortSnapshots } from './algorithms/sorting/quickSort';
+import { generateMergeSortSnapshots } from './algorithms/sorting/mergeSort';
+import { generateLinearSearchSnapshots } from './algorithms/searching/linearSearch';
+import { generateBinarySearchSnapshots } from './algorithms/searching/binarySearch';
+
+// Layout & Controls
+import { TopNavBar } from './components/layout/TopNavBar';
+import { TransportDock } from './components/controls/TransportDock';
+import { StructureActionToolbar } from './components/controls/StructureActionToolbar';
+import { CodeDrawer } from './components/layout/CodeDrawer';
+import { ArrayVisualizer } from './components/visualizers/ArrayVisualizer';
+import { generateArrayByPreset } from './utils/arrayGenerator';
+
 import './App.css';
 
 export const App: React.FC = () => {
+  const [selectedItemId, setSelectedItemId] = useState<string>('bubble-sort');
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
+
+  // Data structure persistent states
+  const [stackState, setStackState] = useState<StackState>(() => createInitialStack());
+  const [queueState, setQueueState] = useState<QueueState>(() => createInitialQueue());
+  const [llState, setLLState] = useState<LinkedListState>(() => createInitialLinkedList());
+  const [bstState, setBSTState] = useState<BSTState>(() => createInitialBST());
+
+  // Array / Sorting persistent states
+  const [arraySize, setArraySize] = useState<number>(10);
+  const [initialArray, setInitialArray] = useState<number[]>(() =>
+    generateArrayByPreset('random', 10)
+  );
+  const [currentTarget, setCurrentTarget] = useState<number>(initialArray[0] || 42);
+
+  // Playback Engine Hook
   const {
-    selectedAlgoId,
-    algorithm,
-    arraySize,
-    preset,
-    initialArray,
-    initialGraph,
     currentStepIdx,
-    currentStep,
+    currentSnapshot,
     totalSteps,
     isPlaying,
     speed,
-    selectAlgorithm,
-    setSpeed,
-    setArraySize,
-    generateData,
-    randomizeTarget,
+    isLooping,
+    setSnapshots,
+    play,
     togglePlay,
     stepForward,
     stepBackward,
-    restart,
-  } = useAlgorithmRunner('bubble-sort', 12);
+    jumpToStep,
+    reset,
+    setSpeed,
+    toggleLoop,
+  } = useVisualizerEngine();
 
-  const [activeRightTab, setActiveRightTab] = useState<'step' | 'info'>('step');
+  // Rebuild snapshots whenever active item or underlying initial data changes
+  const rebuildItemSnapshots = useCallback(
+    (itemId: string, customTarget = currentTarget, customArr = initialArray) => {
+      let generatedSnapshots: StepSnapshot[] = [];
+
+      switch (itemId) {
+        case 'stack':
+          generatedSnapshots = generateStackPeekSnapshots(stackState);
+          break;
+        case 'queue':
+          generatedSnapshots = generateQueuePeekSnapshots(queueState);
+          break;
+        case 'linked-list':
+          generatedSnapshots = generateSearchSnapshots(llState, llState.nodes[0]?.value || 24);
+          break;
+        case 'bst':
+          generatedSnapshots = generateBSTTraversalSnapshots(bstState, 'inorder');
+          break;
+        case 'bubble-sort':
+          generatedSnapshots = generateBubbleSortSnapshots(customArr);
+          break;
+        case 'selection-sort':
+          generatedSnapshots = generateSelectionSortSnapshots(customArr);
+          break;
+        case 'insertion-sort':
+          generatedSnapshots = generateInsertionSortSnapshots(customArr);
+          break;
+        case 'quick-sort':
+          generatedSnapshots = generateQuickSortSnapshots(customArr);
+          break;
+        case 'merge-sort':
+          generatedSnapshots = generateMergeSortSnapshots(customArr);
+          break;
+        case 'linear-search':
+          generatedSnapshots = generateLinearSearchSnapshots(customArr, customTarget);
+          break;
+        case 'binary-search': {
+          const sorted = [...customArr].sort((a, b) => a - b);
+          generatedSnapshots = generateBinarySearchSnapshots(sorted, customTarget);
+          break;
+        }
+        default:
+          generatedSnapshots = generateBubbleSortSnapshots(customArr);
+      }
+
+      setSnapshots(generatedSnapshots);
+    },
+    [stackState, queueState, llState, bstState, initialArray, currentTarget, setSnapshots]
+  );
+
+  useEffect(() => {
+    rebuildItemSnapshots(selectedItemId);
+  }, [selectedItemId, rebuildItemSnapshots]);
+
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        stepBackward();
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        stepForward();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [togglePlay, stepBackward, stepForward]);
+
+  // --- Handlers for Structure Operations ---
+
+  // Stack
+  const handleStackPush = (val: number) => {
+    const snaps = generateStackPushSnapshots(stackState, val);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setStackState(lastSnap.structureState as StackState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleStackPop = () => {
+    const snaps = generateStackPopSnapshots(stackState);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setStackState(lastSnap.structureState as StackState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleStackPeek = () => {
+    const snaps = generateStackPeekSnapshots(stackState);
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleStackReset = () => {
+    const fresh = createInitialStack();
+    setStackState(fresh);
+    setSnapshots(generateStackPeekSnapshots(fresh));
+  };
+
+  // Queue
+  const handleQueueEnqueue = (val: number) => {
+    const snaps = generateQueueEnqueueSnapshots(queueState, val);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setQueueState(lastSnap.structureState as QueueState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleQueueDequeue = () => {
+    const snaps = generateQueueDequeueSnapshots(queueState);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setQueueState(lastSnap.structureState as QueueState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleQueuePeek = () => {
+    const snaps = generateQueuePeekSnapshots(queueState);
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleQueueReset = () => {
+    const fresh = createInitialQueue();
+    setQueueState(fresh);
+    setSnapshots(generateQueuePeekSnapshots(fresh));
+  };
+
+  // Linked List
+  const handleLLInsertHead = (val: number) => {
+    const snaps = generateInsertHeadSnapshots(llState, val);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setLLState(lastSnap.structureState as LinkedListState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleLLInsertTail = (val: number) => {
+    const snaps = generateInsertTailSnapshots(llState, val);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setLLState(lastSnap.structureState as LinkedListState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleLLDelete = (val: number) => {
+    const snaps = generateDeleteNodeSnapshots(llState, val);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setLLState(lastSnap.structureState as LinkedListState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleLLSearch = (val: number) => {
+    const snaps = generateSearchSnapshots(llState, val);
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleLLReset = () => {
+    const fresh = createInitialLinkedList();
+    setLLState(fresh);
+    setSnapshots(generateSearchSnapshots(fresh, 24));
+  };
+
+  // BST
+  const handleBSTInsert = (val: number) => {
+    const snaps = generateBSTInsertSnapshots(bstState, val);
+    const lastSnap = snaps[snaps.length - 1];
+    if (lastSnap?.structureState) {
+      setBSTState(lastSnap.structureState as BSTState);
+    }
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleBSTSearch = (val: number) => {
+    const snaps = generateBSTSearchSnapshots(bstState, val);
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleBSTTraverse = (order: 'inorder' | 'preorder' | 'postorder' | 'levelorder') => {
+    const snaps = generateBSTTraversalSnapshots(bstState, order);
+    setSnapshots(snaps);
+    play();
+  };
+
+  const handleBSTReset = () => {
+    const fresh = createInitialBST();
+    setBSTState(fresh);
+    setSnapshots(generateBSTTraversalSnapshots(fresh, 'inorder'));
+  };
+
+  // Array / Sorting
+  const handleSetArraySize = (newSize: number) => {
+    setArraySize(newSize);
+    const newArr = generateArrayByPreset('random', newSize);
+    setInitialArray(newArr);
+    if (newArr.length > 0) setCurrentTarget(newArr[Math.floor(Math.random() * newArr.length)]);
+  };
+
+  const handleRandomizeArray = () => {
+    const newArr = generateArrayByPreset('random', arraySize);
+    setInitialArray(newArr);
+    if (newArr.length > 0) setCurrentTarget(newArr[Math.floor(Math.random() * newArr.length)]);
+  };
+
+  const handlePresetArray = (preset: 'random' | 'nearly-sorted' | 'reversed') => {
+    const p = preset === 'reversed' ? 'reverse' : preset;
+    const newArr = generateArrayByPreset(p, arraySize);
+    setInitialArray(newArr);
+    if (newArr.length > 0) setCurrentTarget(newArr[Math.floor(Math.random() * newArr.length)]);
+  };
+
+  const handleRandomizeTarget = () => {
+    if (initialArray.length === 0) return;
+    const newTarget = initialArray[Math.floor(Math.random() * initialArray.length)];
+    setCurrentTarget(newTarget);
+    rebuildItemSnapshots(selectedItemId, newTarget, initialArray);
+  };
+
+  const currentMetadata = getItemMetadata(selectedItemId);
 
   return (
-    <div className="app-container">
-      <Header />
+    <div className="algo-lab-app">
+      {/* 1. Minimalist Top Navigation Bar */}
+      <TopNavBar
+        selectedItemId={selectedItemId}
+        onSelectItem={(id) => {
+          setSelectedItemId(id);
+        }}
+        isDrawerOpen={isDrawerOpen}
+        onToggleDrawer={() => setIsDrawerOpen((prev) => !prev)}
+      />
 
-      <div className="app-main-layout">
-        {/* Left Sidebar */}
-        <Sidebar
-          selectedAlgoId={selectedAlgoId}
-          onSelectAlgorithm={selectAlgorithm}
-        />
+      {/* 2. Main Center Workspace */}
+      <div className="algo-lab-body">
+        <main className="algo-lab-stage">
+          {/* Action Toolbar above canvas */}
+          <StructureActionToolbar
+            selectedItemId={selectedItemId}
+            onStackPush={handleStackPush}
+            onStackPop={handleStackPop}
+            onStackPeek={handleStackPeek}
+            onStackReset={handleStackReset}
+            onQueueEnqueue={handleQueueEnqueue}
+            onQueueDequeue={handleQueueDequeue}
+            onQueuePeek={handleQueuePeek}
+            onQueueReset={handleQueueReset}
+            onLLInsertHead={handleLLInsertHead}
+            onLLInsertTail={handleLLInsertTail}
+            onLLDelete={handleLLDelete}
+            onLLSearch={handleLLSearch}
+            onLLReset={handleLLReset}
+            onBSTInsert={handleBSTInsert}
+            onBSTSearch={handleBSTSearch}
+            onBSTTraverse={handleBSTTraverse}
+            onBSTReset={handleBSTReset}
+            arraySize={arraySize}
+            onSetArraySize={handleSetArraySize}
+            onRandomizeArray={handleRandomizeArray}
+            onPresetArray={handlePresetArray}
+            currentTarget={currentTarget}
+            onRandomizeTarget={handleRandomizeTarget}
+          />
 
-        {/* Middle Main Workspace */}
-        <main className="main-workspace">
-          <div className="visualizer-wrapper">
-            {algorithm.metadata.category === 'graph' ? (
-              <GraphVisualizer
-                step={currentStep as GraphAlgorithmStep}
-                initialGraph={initialGraph}
-              />
-            ) : (
-              <ArrayVisualizer
-                step={currentStep as AlgorithmStep}
-                initialArray={initialArray}
-                onRandomizeTarget={randomizeTarget}
+          {/* Interactive Viewport Canvas */}
+          <div className="visualizer-viewport">
+            {selectedItemId === 'stack' && (
+              <StackVisualizer
+                snapshot={currentSnapshot as StepSnapshot<StackState>}
+                currentState={stackState}
               />
             )}
-          </div>
 
-          <div className="control-bar-wrapper">
-            <ControlBar
-              isPlaying={isPlaying}
-              speed={speed}
-              arraySize={arraySize}
-              preset={preset}
-              currentStepIdx={currentStepIdx}
-              totalSteps={totalSteps}
-              onTogglePlay={togglePlay}
-              onStepForward={stepForward}
-              onStepBackward={stepBackward}
-              onRestart={restart}
-              onSetSpeed={setSpeed}
-              onSetArraySize={setArraySize}
-              onGenerateData={generateData}
-            />
+            {selectedItemId === 'queue' && (
+              <QueueVisualizer
+                snapshot={currentSnapshot as StepSnapshot<QueueState>}
+                currentState={queueState}
+              />
+            )}
+
+            {selectedItemId === 'linked-list' && (
+              <LinkedListVisualizer
+                snapshot={currentSnapshot as StepSnapshot<LinkedListState>}
+                currentState={llState}
+              />
+            )}
+
+            {selectedItemId === 'bst' && (
+              <BSTVisualizer
+                snapshot={currentSnapshot as StepSnapshot<BSTState>}
+                currentState={bstState}
+              />
+            )}
+
+            {/* Sorting & Searching Bar Visualizer */}
+            {!['stack', 'queue', 'linked-list', 'bst'].includes(selectedItemId) && (
+              <ArrayVisualizer
+                snapshot={currentSnapshot as StepSnapshot<ArrayAlgorithmState>}
+                initialArray={
+                  selectedItemId === 'binary-search'
+                    ? [...initialArray].sort((a, b) => a - b)
+                    : initialArray
+                }
+              />
+            )}
           </div>
         </main>
 
-        {/* Right Info & Explanation Panel */}
-        <aside className="right-panel" aria-label="Açıklama ve Bilgi Paneli">
-          <div className="right-panel-tabs">
-            <button
-              className={`panel-tab ${activeRightTab === 'step' ? 'active' : ''}`}
-              onClick={() => setActiveRightTab('step')}
-            >
-              <Activity size={16} />
-              <span>Adım Anlatımı</span>
-            </button>
-            <button
-              className={`panel-tab ${activeRightTab === 'info' ? 'active' : ''}`}
-              onClick={() => setActiveRightTab('info')}
-            >
-              <BookOpen size={16} />
-              <span>Nasıl Çalışır? & Karmaşıklık</span>
-            </button>
-          </div>
-
-          <div className="panel-tab-content">
-            {activeRightTab === 'step' ? (
-              <StepExplanationPanel
-                step={currentStep}
-                currentStepIdx={currentStepIdx}
-                totalSteps={totalSteps}
-                selectedAlgoId={selectedAlgoId}
-                algoName={algorithm.metadata.name}
-              />
-            ) : (
-              <InfoPanel metadata={algorithm.metadata} />
-            )}
-          </div>
-        </aside>
+        {/* 3. Collapsible Right Drawer with Pseudocode & Live Metrics */}
+        <CodeDrawer
+          metadata={currentMetadata}
+          currentSnapshot={currentSnapshot}
+          isOpen={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+        />
       </div>
+
+      {/* 4. Persistent Transport Dock */}
+      <TransportDock
+        isPlaying={isPlaying}
+        currentStepIdx={currentStepIdx}
+        totalSteps={totalSteps}
+        speed={speed}
+        isLooping={isLooping}
+        onTogglePlay={togglePlay}
+        onStepForward={stepForward}
+        onStepBackward={stepBackward}
+        onReset={reset}
+        onJumpToStep={jumpToStep}
+        onSetSpeed={setSpeed}
+        onToggleLoop={toggleLoop}
+      />
     </div>
   );
 };
